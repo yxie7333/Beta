@@ -7,6 +7,11 @@ TagManager:
   - ground
   - LightBox
   - Mirror
+  - Stone
+  - Gem
+  - Lava
+  - Water
+  - Grass
   layers:
   - Default
   - TransparentFX

@@ -23,8 +23,9 @@ public class LightBeamController : MonoBehaviour
         // Check if primary light beam hits the mirror.
         RaycastHit2D hit = Physics2D.Raycast(primaryLightBeam.position, primaryLightBeam.up, maxBeamLength, mirrorLayer);
 
-        if (hit.collider != null)
+        if (hit.collider != null && hit.collider.gameObject.name == "Mirror")
         {
+            // Debug.Log("Primary light beam collided with: " + hit.collider.name);
             // Reflect the beam based on the mirror's orientation.
             Vector2 reflectedDirection = Vector2.Reflect(primaryLightBeam.up, hit.normal);
             UpdateReflectedBeam(reflectedLightBeam, hit.point, reflectedDirection);

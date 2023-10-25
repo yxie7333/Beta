@@ -1,75 +1,118 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CombinedPlayerController : MonoBehaviour
+public class CombinedPlayer1 : MonoBehaviour
 {
-    // Shared Variables
-    private Rigidbody2D rb;
-
-    // Player Movement Variables
-    public float moveSpeed = 5f;
+    public float speed = 5f;
     public float jumpForce = 7f;
+    private bool isJumping = false;
+    private Rigidbody2D rb;
+    private bool isCollidingWithBox = false;
+    private GameObject lightBox;
+    private bool isLeftOfBox = false;
 
-    // ResizableBox Variables
+
     private SpriteRenderer sr;
     private bool canResize = false;
     private bool canGrowUp = true;
     private bool canGrowDown = false;
     private bool canGrowLeft = true;
     private bool canGrowRight = true;
-    private bool canGrow = false;
+    private bool canGrow = false; // Start with player not being able to grow
     private float playerMass = 1f;
 
-    // UI
     public Text resizeHintText;
-
-    // LightBox Movement Variables
-    private bool isJumping = false;
-    private bool isCollidingWithBox = false;
-    private GameObject lightBox;
-    private bool isLeftOfBox = false;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
-        resizeHintText.enabled = false;
+        resizeHintText.enabled = false; // 初始时设置提示为不可见
         rb.mass = playerMass;
     }
 
     private void Update()
     {
-        HandleMovement();
-        HandleResize();
+        if (transform.position.x < -3.84f)
+        {
+            HandleMovement();
+            HandleResize();
+        }
+        if (transform.position.x >= -3.84f) { 
+            float moveX = Input.GetAxis("Horizontal");
+
+            // If colliding with the light box and player is on the left side and 'D' is pressed
+            if (isCollidingWithBox && isLeftOfBox && Input.GetKey(KeyCode.D))
+            {
+                // Move both player and light box to the right
+                rb.velocity = new Vector2(speed, rb.velocity.y);
+                lightBox.transform.position = new Vector2(lightBox.transform.position.x + speed * Time.deltaTime, lightBox.transform.position.y);
+            }
+            // If colliding with the light box and player is on the right side and 'A' is pressed
+            else if (isCollidingWithBox && !isLeftOfBox && Input.GetKey(KeyCode.A))
+            {
+                // Move both player and light box to the left
+                rb.velocity = new Vector2(-speed, rb.velocity.y);
+                lightBox.transform.position = new Vector2(lightBox.transform.position.x - speed * Time.deltaTime, lightBox.transform.position.y);
+            }
+            else
+            {
+                // Regular movement without moving the box
+                rb.velocity = new Vector2(moveX * speed, rb.velocity.y);
+            }
+
+            // Jumping
+            if (Input.GetButtonDown("Jump") && !isJumping)
+            {
+                rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+                isJumping = true;
+            }
+        }
+        
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("ground"))
+        {
+            isJumping = false;
+        }
+
+        if (collision.gameObject.CompareTag("LightBox"))
+        {
+            isCollidingWithBox = true;
+            lightBox = collision.gameObject;
+
+            // Check if player is on the left or right side of the box upon collision
+            isLeftOfBox = transform.position.x < lightBox.transform.position.x;
+        }
+
+        if (collision.gameObject.CompareTag("Water") || collision.gameObject.CompareTag("Lava") || collision.gameObject.CompareTag("Grass"))
+        {
+            transform.position = new Vector2(-3.84f, 0f);
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("LightBox"))
+        {
+            isCollidingWithBox = false;
+            lightBox = null;
+        }
     }
 
     private void HandleMovement()
     {
-        float moveX = Input.GetAxis("Horizontal");
+        float xDir = Input.GetAxis("Horizontal");
+        rb.velocity = new Vector2(xDir * speed, rb.velocity.y);
 
-        if (isCollidingWithBox && isLeftOfBox && Input.GetKey(KeyCode.D))
+        if (Input.GetButtonDown("Jump"))
         {
-            rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
-            lightBox.transform.position = new Vector2(lightBox.transform.position.x + moveSpeed * Time.deltaTime, lightBox.transform.position.y);
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
-        else if (isCollidingWithBox && !isLeftOfBox && Input.GetKey(KeyCode.A))
-        {
-            rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
-            lightBox.transform.position = new Vector2(lightBox.transform.position.x - moveSpeed * Time.deltaTime, lightBox.transform.position.y);
-        }
-        else
-        {
-            rb.velocity = new Vector2(moveX * moveSpeed, rb.velocity.y);
-        }
-
-        if (Input.GetButtonDown("Jump") && !isJumping)
-        {
-            rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
-            isJumping = true;
-        }
-
     }
 
     private void HandleResize()
@@ -138,18 +181,7 @@ public class CombinedPlayerController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("ground"))
-        {
-            isJumping = false;
-        }
-        if (collision.gameObject.CompareTag("LightBox"))
-        {
-            isCollidingWithBox = false;
-            lightBox = null;
-        }
-    }
+
 
 
     private void CheckDirectionsForWalls()
@@ -170,11 +202,11 @@ public class CombinedPlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Player collided with: " + collision.gameObject.name);  
+        Debug.Log("Player collided with: " + collision.gameObject.name);
 
         if (collision.gameObject.tag == "Gem")
         {
-            Debug.Log("Gem detected");  
+            Debug.Log("Gem detected");
             canResize = true;
             canGrow = true;
             resizeHintText.enabled = true;
@@ -207,3 +239,4 @@ public class CombinedPlayerController : MonoBehaviour
     }
 
 }
+
