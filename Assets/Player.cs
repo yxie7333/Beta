@@ -18,7 +18,6 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("start!");
         audioSource = GetComponent<AudioSource>();
     }
 
