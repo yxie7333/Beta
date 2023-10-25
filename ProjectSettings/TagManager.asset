@@ -12,6 +12,8 @@ TagManager:
   - Lava
   - Water
   - Grass
+  - LeftWall
+  - RightWall
   layers:
   - Default
   - TransparentFX
