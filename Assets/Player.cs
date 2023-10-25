@@ -12,6 +12,17 @@ public class Player : MonoBehaviour
     private GameObject lightBox;
     private bool isLeftOfBox = false;
 
+    // For WallTouching Effect
+    public AudioClip wallTouchSound;
+    private AudioSource audioSource;
+
+    void Awake()
+    {
+        Debug.Log("start!");
+        audioSource = GetComponent<AudioSource>();
+    }
+
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -64,8 +75,16 @@ public class Player : MonoBehaviour
             // Check if player is on the left or right side of the box upon collision
             isLeftOfBox = transform.position.x < lightBox.transform.position.x;
         }
-    }
 
+        if (collision.gameObject.CompareTag("LeftWall"))
+        {
+            PlayWallTouchSound(-1);
+        }
+        else if (collision.gameObject.CompareTag("RightWall"))
+        {
+            PlayWallTouchSound(1);
+        }
+    }
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("LightBox"))
@@ -74,4 +93,11 @@ public class Player : MonoBehaviour
             lightBox = null;
         }
     }
+
+    private void PlayWallTouchSound(float pan)
+    {
+        audioSource.panStereo = pan;
+        audioSource.PlayOneShot(wallTouchSound);
+    }
+
 }
