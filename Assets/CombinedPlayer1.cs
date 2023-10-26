@@ -12,6 +12,8 @@ public class CombinedPlayer1 : MonoBehaviour
     private bool isCollidingWithBox = false;
     private GameObject lightBox;
     private bool isLeftOfBox = false;
+    public GameObject textForLight;
+    //private Transform playerTransform;
 
 
     private SpriteRenderer sr;
@@ -31,16 +33,29 @@ public class CombinedPlayer1 : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         resizeHintText.enabled = false; // 初始时设置提示为不可见
         rb.mass = playerMass;
+
+        //playerTransform = this.transform;
+        SetTextVisibility(false);
     }
 
     private void Update()
     {
-        if (transform.position.x < -3.84f)
+
+        if (transform.position.x > -5 && transform.position.x < 45)
+        {
+            SetTextVisibility(true);
+        }
+        else
+        {
+            SetTextVisibility(false);
+        }
+
+        if (transform.position.x > 157f)
         {
             HandleMovement();
             HandleResize();
         }
-        if (transform.position.x >= -3.84f) { 
+        if (transform.position.x <= 157f) { 
             float moveX = Input.GetAxis("Horizontal");
 
             // If colliding with the light box and player is on the left side and 'D' is pressed
@@ -104,6 +119,21 @@ public class CombinedPlayer1 : MonoBehaviour
         }
     }
 
+    private void SetTextVisibility(bool isVisible)
+    {
+        // If TextForLight is a UI Text object
+        if (textForLight.GetComponent<TMPro.TextMeshProUGUI>() != null)
+        {
+            textForLight.GetComponent<TMPro.TextMeshProUGUI>().enabled = isVisible;
+        }
+
+        // If TextForLight has a Renderer (like a SpriteRenderer for 2D games)
+        else if (textForLight.GetComponent<Renderer>() != null)
+        {
+            textForLight.GetComponent<Renderer>().enabled = isVisible;
+        }
+    }
+
     private void HandleMovement()
     {
         float xDir = Input.GetAxis("Horizontal");
@@ -114,6 +144,7 @@ public class CombinedPlayer1 : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
     }
+
 
     private void HandleResize()
     {
