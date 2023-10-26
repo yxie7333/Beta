@@ -26,6 +26,24 @@ public class CombinedPlayer1 : MonoBehaviour
     private float playerMass = 1f;
 
     public Text resizeHintText;
+    
+    //Magnet
+   
+    public Vector2 targetPosition = new Vector2(143f, -67f); // 设置玩家需要到达的位置
+    public float proximityThreshold = 2f; // 当玩家与目标位置之间的距离小于此值时，会显示文本
+    public Text instructionText; // 在Unity中将InstructionText拖放到这个字段中
+
+    // Recall
+    public Material highlightMaterial;
+    private Material originalMaterial;
+    private GameObject highlightedObject;
+    public Vector3 originPosition;
+    public float interactDistance = 20f;
+    public Text RecallText;
+    public int RecallActivated = 0;
+    Vector2 targetPositionToRecallText = new Vector2(121f, -67f);
+
+
 
     private void Start()
     {
@@ -36,6 +54,14 @@ public class CombinedPlayer1 : MonoBehaviour
 
         //playerTransform = this.transform;
         SetTextVisibility(false);
+
+        //Magnet
+        instructionText.enabled = false; // 初始时隐藏文本
+
+        // Recall
+        RecallText.enabled = false;
+
+
     }
 
     private void Update()
@@ -85,7 +111,43 @@ public class CombinedPlayer1 : MonoBehaviour
                 isJumping = true;
             }
         }
+
+        // Recall Operation
+        if (Input.GetKey(KeyCode.J))
+        {
+            HighlightInteractableObjects();
+        }
+        else
+        {
+            RemoveHighlight();
+        }
+        if (highlightedObject != null)
+        {
+            RecallActivated = 1;
+
+        }
+
+        //Magnet
+        float distanceToTarget = Vector2.Distance(transform.position, targetPosition);
+        if (distanceToTarget <= proximityThreshold)
+        {
+            instructionText.enabled = true; // 当玩家接近目标位置时，显示文本
+        }
+        else if (instructionText.enabled) // 如果玩家远离目标区域，并且文本当前是可见的
+        {
+            instructionText.enabled = false; // 隐藏文本
+        }
+
+    // Recall Text
+    float distanceToRecallText = Vector2.Distance(transform.position, targetPositionToRecallText);
+        if (distanceToRecallText <= 1.0f)
+        {
+            RecallText.enabled = true;
+        }
+
+
         
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -269,5 +331,33 @@ public class CombinedPlayer1 : MonoBehaviour
         }
     }
 
+
+    // Recall
+    void HighlightInteractableObjects()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactDistance);
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.CompareTag("Recall"))
+            {
+                // 高亮物体，可以通过修改材质颜色等方式来实现
+                highlightedObject = collider.gameObject;
+                originalMaterial = highlightedObject.GetComponent<Renderer>().material;
+                // 实现高亮效果，改变材质颜色等
+                //highlightedObject.GetComponent<Renderer>().material = highlightMaterial;
+
+            }
+        }
+    }
+    void RemoveHighlight()
+    {
+        if (highlightedObject != null)
+        {
+            // 移除高亮效果，还原材质颜色等
+            highlightedObject.GetComponent<Renderer>().material = originalMaterial;
+            highlightedObject = null;
+            RecallActivated = 0;
+        }
+    }
 }
 
