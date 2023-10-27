@@ -24,7 +24,7 @@ public class Boat : MonoBehaviour
         if (playerScript.RecallActivated == 0)
         {
 
-            if (Vector3.Distance(transform.position, myPlayer.transform.position) <= 20f)
+            if (Vector3.Distance(transform.position, myPlayer.transform.position) <= 15f)
             {
 
                 transform.position = Vector3.MoveTowards(transform.position, targetPosition,

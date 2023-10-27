@@ -138,14 +138,16 @@ public class CombinedPlayer1 : MonoBehaviour
             instructionText.enabled = false; // 隐藏文本
         }
 
-    // Recall Text
-    float distanceToRecallText = Vector2.Distance(transform.position, targetPositionToRecallText);
+        // Recall Text
+        float distanceToRecallText = Vector2.Distance(transform.position, targetPositionToRecallText);
         if (distanceToRecallText <= 1.0f)
         {
             RecallText.enabled = true;
         }
-
-
+        if(transform.position.x > 140.0f)
+        {
+            RecallText.enabled = false;
+        }
         
 
     }
