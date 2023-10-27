@@ -5,15 +5,16 @@ TagManager:
   serializedVersion: 2
   tags:
   - ground
-  - LightBox
   - Mirror
-  - Stone
-  - Gem
-  - Lava
   - Water
-  - Grass
-  - LeftWall
+  - LightBox
+  - Lava
+  - Recall
   - RightWall
+  - Stone
+  - LeftWall
+  - Grass
+  - Gem
   layers:
   - Default
   - TransparentFX
@@ -21,11 +22,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - MirrorLayer
   - Player
   - Light
-  - Grass
+  - MirrorLayer
+  - BoundCamera
+  - 
   - 
   - 
   - 
