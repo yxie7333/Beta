@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
+using Proyecto26;
+using static CombinedPlayer1;
 
 public class CombinedPlayer1 : MonoBehaviour
 {
@@ -48,6 +51,40 @@ public class CombinedPlayer1 : MonoBehaviour
     public SpriteMask mask;
     public AudioClip wallTouchSound;
     private AudioSource audioSource;
+
+
+    // analytics
+    private string playerID = System.Guid.NewGuid().ToString();
+    // metric 1
+    private Vector3 lastPlayerPosition;
+    private float analyticTime = 0.0f;
+    private float currentTime = 0.0f;
+
+    [System.Serializable]
+    public class AnalyticPath
+    {
+        public string tick;
+        public AnalyticPosition position;
+    }
+
+    [System.Serializable]
+    public class AnalyticPosition
+    {
+        public float x;
+        public float y;
+    }
+    // metric 2
+    private int resizeDirection = 0;
+    private int resizeCount = 0;
+
+    [System.Serializable]
+    public class AnalyticShape
+    {
+        public string resizeCount;
+        public string resizeDirection;
+    }
+
+
     void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -70,6 +107,9 @@ public class CombinedPlayer1 : MonoBehaviour
 
         // Recall
         RecallText.enabled = false;
+
+        // Analytics
+        lastPlayerPosition = transform.position;
 
     }
 
@@ -160,6 +200,36 @@ public class CombinedPlayer1 : MonoBehaviour
         {
             RecallText.enabled = false;
         }
+
+        // analytics
+        if (mask.transform.localScale.x < 2 && mask.transform.localScale.y < 2) // only collect data without vision
+        {
+            if (transform.position != lastPlayerPosition) // posiiton change
+            {
+                currentTime = Time.timeSinceLevelLoad;
+                if ((currentTime - analyticTime) > 0.1) // data-collection intervals 
+                {
+                    string levelInf = "1";
+                    string stageInf = "1";
+
+                    AnalyticPath analyticPath = new AnalyticPath();
+                    analyticPath.tick = currentTime.ToString();
+                    AnalyticPosition analyticPosition = new AnalyticPosition();
+                    analyticPosition.x = transform.position.x;
+                    analyticPosition.y = transform.position.y;
+                    analyticPath.position = analyticPosition;
+
+                    string analyticJson = JsonUtility.ToJson(analyticPath);
+                    string DBurl = "https://yanjungu-unity-analytics-default-rtdb.firebaseio.com/"
+                                + "levels/" + levelInf + "/stages/" + stageInf + "/players/" + playerID + ".json";
+
+                    RestClient.Post(DBurl, analyticJson);
+                    analyticTime = currentTime;
+                }
+                lastPlayerPosition = transform.position;
+            }
+        }
+       
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -262,6 +332,7 @@ public class CombinedPlayer1 : MonoBehaviour
                     transform.localScale += new Vector3(0, 1, 0);
                     transform.position += new Vector3(0, 0.5f, 0);
                     hasGrown = true;
+                    resizeDirection = 1;
                 }
                 // Grow Downwards
                 else if (mousePosition.y < bottomBoundary && canGrowDown)
@@ -270,6 +341,7 @@ public class CombinedPlayer1 : MonoBehaviour
                     transform.localScale += new Vector3(0, -1, 0);
                     transform.position -= new Vector3(0, 0.5f, 0);
                     hasGrown = true;
+                    resizeDirection = 2;
                 }
                 // Grow Left
                 else if (mousePosition.x < leftBoundary && canGrowLeft)
@@ -278,6 +350,7 @@ public class CombinedPlayer1 : MonoBehaviour
                     transform.localScale += new Vector3(1, 0, 0);  // 在x轴上增加1
                     transform.position -= new Vector3(0.5f, 0, 0);  // 位置左移0.5
                     hasGrown = true;
+                    resizeDirection = 3;
                 }
                 // Grow Right
                 else if (mousePosition.x > rightBoundary && canGrowRight)
@@ -286,6 +359,7 @@ public class CombinedPlayer1 : MonoBehaviour
                     transform.localScale += new Vector3(1, 0, 0);
                     transform.position += new Vector3(0.5f, 0, 0);
                     hasGrown = true;
+                    resizeDirection = 4;
                 }
 
                 // If the player has grown in any direction, reset the ability to grow
@@ -293,6 +367,19 @@ public class CombinedPlayer1 : MonoBehaviour
                 {
                     canGrow = false;
                     resizeHintText.enabled = false;
+                    // analytic
+                    string levelInf = "1";
+                    string stageInf = "2";
+                    resizeCount += 1;
+                    AnalyticShape analyticShape = new AnalyticShape();
+                    analyticShape.resizeCount = resizeCount.ToString();
+                    analyticShape.resizeDirection = resizeDirection.ToString();
+
+                    string analyticJson = JsonUtility.ToJson(analyticShape);
+                    string DBurl = "https://yanjungu-unity-analytics-default-rtdb.firebaseio.com/"
+                                + "levels/" + levelInf + "/stages/" + stageInf + "/players/" + playerID + ".json";
+
+                    RestClient.Post(DBurl, analyticJson);
                 }
             }
         }
