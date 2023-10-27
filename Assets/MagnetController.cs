@@ -22,7 +22,7 @@ public class MagnetController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H))
+        if (Input.GetKeyDown(KeyCode.K))
         {
             isEffectorActivated = !isEffectorActivated; // 切换Point Effector 2D的状态
 

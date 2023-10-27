@@ -156,6 +156,10 @@ public class CombinedPlayer1 : MonoBehaviour
         {
             RecallText.enabled = true;
         }
+        if(transform.position.x > 139.0f)
+        {
+            RecallText.enabled = false;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
