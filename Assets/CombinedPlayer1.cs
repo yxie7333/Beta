@@ -27,15 +27,50 @@ public class CombinedPlayer1 : MonoBehaviour
 
     public Text resizeHintText;
 
+    //Magnet
+
+    public Vector2 targetPosition = new Vector2(143f, -67f); // 设置玩家需要到达的位置
+    public float proximityThreshold = 2f; // 当玩家与目标位置之间的距离小于此值时，会显示文本
+    public Text instructionText; // 在Unity中将InstructionText拖放到这个字段中
+
+    // Recall
+    public Material highlightMaterial;
+    private Material originalMaterial;
+    private GameObject highlightedObject;
+    public Vector3 originPosition;
+    public float interactDistance = 20f;
+    public Text RecallText;
+    public int RecallActivated = 0;
+    Vector2 targetPositionToRecallText = new Vector2(121f, -67f);
+
+    // sound
+    public int eatenGemCount = 0;
+    public SpriteMask mask;
+    public AudioClip wallTouchSound;
+    private AudioSource audioSource;
+    void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         resizeHintText.enabled = false; // 初始时设置提示为不可见
         rb.mass = playerMass;
+        // sound
+        eatenGemCount = 0;
 
         //playerTransform = this.transform;
         SetTextVisibility(false);
+
+        //Magnet
+        instructionText.enabled = false; // 初始时隐藏文本
+
+        // Recall
+        RecallText.enabled = false;
+
     }
 
     private void Update()
@@ -52,10 +87,12 @@ public class CombinedPlayer1 : MonoBehaviour
 
         if (transform.position.x > 157f)
         {
+            Debug.Log("HandleMovement and HandleResize should be active now");
             HandleMovement();
             HandleResize();
         }
-        if (transform.position.x <= 157f) { 
+        if (transform.position.x <= 157f)
+        {
             float moveX = Input.GetAxis("Horizontal");
 
             // If colliding with the light box and player is on the left side and 'D' is pressed
@@ -85,7 +122,40 @@ public class CombinedPlayer1 : MonoBehaviour
                 isJumping = true;
             }
         }
-        
+
+
+        // Recall Operation
+        if (Input.GetKey(KeyCode.J))
+        {
+            HighlightInteractableObjects();
+        }
+        else
+        {
+            RemoveHighlight();
+        }
+        if (highlightedObject != null)
+        {
+            RecallActivated = 1;
+
+        }
+
+        //Magnet
+        float distanceToTarget = Vector2.Distance(transform.position, targetPosition);
+        if (distanceToTarget <= proximityThreshold)
+        {
+            instructionText.enabled = true; // 当玩家接近目标位置时，显示文本
+        }
+        else if (instructionText.enabled) // 如果玩家远离目标区域，并且文本当前是可见的
+        {
+            instructionText.enabled = false; // 隐藏文本
+        }
+
+        // Recall Text
+        float distanceToRecallText = Vector2.Distance(transform.position, targetPositionToRecallText);
+        if (distanceToRecallText <= 1.0f)
+        {
+            RecallText.enabled = true;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -108,6 +178,20 @@ public class CombinedPlayer1 : MonoBehaviour
         {
             transform.position = new Vector2(-3.84f, 0f);
         }
+
+        if (collision.gameObject.CompareTag("LeftWall"))
+        {
+            PlayWallTouchSound(-1);
+            SoundScreenEffect.Instance.FlashLeft();
+
+        }
+        else if (collision.gameObject.CompareTag("RightWall"))
+        {
+            PlayWallTouchSound(1);
+            SoundScreenEffect.Instance.FlashRight();
+
+        }
+
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -134,6 +218,7 @@ public class CombinedPlayer1 : MonoBehaviour
         }
     }
 
+
     private void HandleMovement()
     {
         float xDir = Input.GetAxis("Horizontal");
@@ -150,6 +235,7 @@ public class CombinedPlayer1 : MonoBehaviour
     {
         if (canResize && canGrow)
         {
+            Debug.Log($"canResize: {canResize}, canGrow: {canGrow}");
             sr.color = Color.yellow;
             CheckDirectionsForWalls();
 
@@ -242,10 +328,31 @@ public class CombinedPlayer1 : MonoBehaviour
             canGrow = true;
             resizeHintText.enabled = true;
 
+            eatenGemCount += 1;
+
+            if (mask != null)
+            {
+
+                if (eatenGemCount == 1)
+                {
+                    mask.transform.localScale = new Vector3(5, 5, 1);
+                }
+                else if (eatenGemCount == 1)
+                {
+                    mask.transform.localScale = new Vector3(500, 500, 1);
+                }
+                else
+                {
+                    mask.transform.localScale += new Vector3(eatenGemCount + 1, eatenGemCount + 1, 0);
+                }
+
+            }
             playerMass *= 2;  // 玩家的质量翻倍
             rb.mass = playerMass;
 
             Destroy(collision.gameObject);
+
+
         }
     }
 
@@ -267,6 +374,37 @@ public class CombinedPlayer1 : MonoBehaviour
                 }
             }
         }
+    }
+    void HighlightInteractableObjects()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactDistance);
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.CompareTag("Recall"))
+            {
+                // 高亮物体，可以通过修改材质颜色等方式来实现
+                highlightedObject = collider.gameObject;
+                originalMaterial = highlightedObject.GetComponent<Renderer>().material;
+                // 实现高亮效果，改变材质颜色等
+                //highlightedObject.GetComponent<Renderer>().material = highlightMaterial;
+
+            }
+        }
+    }
+    void RemoveHighlight()
+    {
+        if (highlightedObject != null)
+        {
+            // 移除高亮效果，还原材质颜色等
+            highlightedObject.GetComponent<Renderer>().material = originalMaterial;
+            highlightedObject = null;
+            RecallActivated = 0;
+        }
+    }
+    private void PlayWallTouchSound(float pan)
+    {
+        audioSource.panStereo = pan;
+        audioSource.PlayOneShot(wallTouchSound);
     }
 
 }
