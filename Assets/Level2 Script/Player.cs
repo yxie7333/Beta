@@ -12,6 +12,13 @@ public class Player : MonoBehaviour
     private GameObject lightBox;
     private bool isLeftOfBox = false;
 
+    // Recall
+    public Material highlightMaterial;
+    private Material originalMaterial;
+    private GameObject highlightedObject;
+    public float interactDistance = 20f;
+    public int RecallActivated = 0;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -47,6 +54,21 @@ public class Player : MonoBehaviour
             rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
             isJumping = true;
         }
+
+        // Recall Operation
+        if (Input.GetKey(KeyCode.J))
+        {
+            HighlightInteractableObjects();
+        }
+        else
+        {
+            RemoveHighlight();
+        }
+        if (highlightedObject != null)
+        {
+            RecallActivated = 1;
+
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -72,6 +94,34 @@ public class Player : MonoBehaviour
         {
             isCollidingWithBox = false;
             lightBox = null;
+        }
+    }
+
+    // Recall
+    void HighlightInteractableObjects()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactDistance);
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.CompareTag("Recall"))
+            {
+                // 高亮物体，可以通过修改材质颜色等方式来实现
+                highlightedObject = collider.gameObject;
+                originalMaterial = highlightedObject.GetComponent<Renderer>().material;
+                // 实现高亮效果，改变材质颜色等
+                //highlightedObject.GetComponent<Renderer>().material = highlightMaterial;
+
+            }
+        }
+    }
+    void RemoveHighlight()
+    {
+        if (highlightedObject != null)
+        {
+            // 移除高亮效果，还原材质颜色等
+            highlightedObject.GetComponent<Renderer>().material = originalMaterial;
+            highlightedObject = null;
+            RecallActivated = 0;
         }
     }
 }
