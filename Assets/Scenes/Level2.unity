@@ -9027,7 +9027,7 @@ GameObject:
   - component: {fileID: 114896948}
   - component: {fileID: 114896947}
   - component: {fileID: 114896946}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Mirror
   m_TagString: Mirror
   m_Icon: {fileID: 0}
@@ -50974,7 +50974,6 @@ SceneRoots:
   - {fileID: 1836455597}
   - {fileID: 686473181}
   - {fileID: 1827087156}
-  - {fileID: 683882387}
   - {fileID: 303407871}
   - {fileID: 1317798437}
   - {fileID: 120939599}
