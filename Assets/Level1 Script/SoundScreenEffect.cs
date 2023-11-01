@@ -9,7 +9,6 @@ public class SoundScreenEffect : MonoBehaviour
     public static SoundScreenEffect Instance; // µ¥ÀýÄ£Ê½
     public Image leftFlash;
     public Image rightFlash;
-    public Image greenDot;
 
     public Transform player;
     public Transform gem1;

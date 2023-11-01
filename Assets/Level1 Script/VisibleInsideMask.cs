@@ -13,13 +13,10 @@ public class VisibleInsideMask : MonoBehaviour
     public Transform player;
     private TilemapRenderer tilemapRenderer;
     private int enterSoundZone = 0;
-   public TextMeshProUGUI soundDisplayText;
-
     // Start is called before the first frame update
     void Start()
     {
         tilemapRenderer = GetComponent<TilemapRenderer>();
-        soundDisplayText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -30,10 +27,6 @@ public class VisibleInsideMask : MonoBehaviour
             if (enterSoundZone == 0)
             {
                 tilemapRenderer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
-
-                soundDisplayText.gameObject.SetActive(true);
-                StartCoroutine(HideTextAfterSeconds(5f));
-
                 enterSoundZone = 1;
             }
             else
@@ -55,11 +48,5 @@ public class VisibleInsideMask : MonoBehaviour
             }
         }
             
-    }
-
-    private IEnumerator HideTextAfterSeconds(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        soundDisplayText.gameObject.SetActive(false);
     }
 }
