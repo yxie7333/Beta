@@ -107,7 +107,10 @@ public class CombinedPlayer1 : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         resizeHintText.enabled = false; // 初始时设置提示为不可见
         rb.mass = playerMass;
-        weightHintText.enabled = false;
+        if (weightHintText != null)
+        {
+            weightHintText.enabled = false;
+        }
         // sound
         eatenGemCount = 0;
 
@@ -497,8 +500,11 @@ public class CombinedPlayer1 : MonoBehaviour
             canGrow = true;
             resizeHintText.enabled = true;
             SetArrowsActive(true);
-            weightHintText.enabled = false;
+            if (weightHintText != null)
+            {
+                weightHintText.enabled = false;
 
+            }
             eatenGemCount += 1;
 
             if (mask != null)
@@ -542,7 +548,10 @@ public class CombinedPlayer1 : MonoBehaviour
                 else
                 {
                     stoneRb.constraints = RigidbodyConstraints2D.FreezeAll;  // 冻结石头，防止玩家移动它
-                    weightHintText.enabled = true;
+                    if (weightHintText != null)
+                    {
+                        weightHintText.enabled = true;
+                    }
                 }
             }
         }
