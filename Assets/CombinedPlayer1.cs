@@ -16,6 +16,12 @@ public class CombinedPlayer1 : MonoBehaviour
     //private GameObject lightBox;
     //private bool isLeftOfBox = false;
     public GameObject textForLight;
+    public GameObject textForBox;
+    public GameObject textForGrass;
+    public GameObject textForIce;
+    public GameObject textForLava;
+
+    
     //private Transform playerTransform;
 
 
@@ -100,7 +106,12 @@ public class CombinedPlayer1 : MonoBehaviour
         eatenGemCount = 0;
 
         //playerTransform = this.transform;
-        SetTextVisibility(false);
+        SetTextVisibility(false, textForBox);
+        SetTextVisibility(false, textForLight);
+        SetTextVisibility(false, textForGrass);
+        SetTextVisibility(false, textForIce);
+        SetTextVisibility(false , textForLava);
+
 
         //Magnet
         instructionText.enabled = false; // 初始时隐藏文本
@@ -116,14 +127,41 @@ public class CombinedPlayer1 : MonoBehaviour
     private void Update()
     {
 
-        if (transform.position.x > -5 && transform.position.x < 45)
+        if (transform.position.x > -8f && transform.position.x < -3.2f)
         {
-            SetTextVisibility(true);
+            SetTextVisibility(true, textForBox);
         }
         else
         {
-            SetTextVisibility(false);
+            SetTextVisibility(false, textForBox);
         }
+        if (transform.position.x > -3.2f && transform.position.x < 0f)
+        {
+            SetTextVisibility(true, textForLight);
+            SetTextVisibility(true, textForGrass);
+        }
+        else
+        {
+            SetTextVisibility(false, textForLight);
+            SetTextVisibility(false, textForGrass);
+        }
+        if (transform.position.x > 13f && transform.position.x < 24f)
+        {
+            SetTextVisibility(true, textForIce);
+        }
+        else
+        {
+            SetTextVisibility(false, textForIce);
+        }
+        if (transform.position.x > 25f && transform.position.x < 46f)
+        {
+            SetTextVisibility(true, textForLava);
+        }
+        else
+        {
+            SetTextVisibility(false, textForLava);
+        }
+
 
         if (transform.position.x > 157f)
         {
@@ -290,18 +328,18 @@ public class CombinedPlayer1 : MonoBehaviour
     //    }
     //}
 
-    private void SetTextVisibility(bool isVisible)
+    private void SetTextVisibility(bool isVisible, GameObject text)
     {
         // If TextForLight is a UI Text object
-        if (textForLight.GetComponent<TMPro.TextMeshProUGUI>() != null)
+        if (text.GetComponent<TMPro.TextMeshProUGUI>() != null)
         {
-            textForLight.GetComponent<TMPro.TextMeshProUGUI>().enabled = isVisible;
+            text.GetComponent<TMPro.TextMeshProUGUI>().enabled = isVisible;
         }
 
         // If TextForLight has a Renderer (like a SpriteRenderer for 2D games)
-        else if (textForLight.GetComponent<Renderer>() != null)
+        else if (text.GetComponent<Renderer>() != null)
         {
-            textForLight.GetComponent<Renderer>().enabled = isVisible;
+            text.GetComponent<Renderer>().enabled = isVisible;
         }
     }
 
