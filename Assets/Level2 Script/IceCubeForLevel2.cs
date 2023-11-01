@@ -39,14 +39,15 @@ public class IceCubeForLevel2 : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        Debug.Log("-----" + other.gameObject);
         if (other.gameObject == player)
         {
             isCollidingWithPlayer = true;
         }
-
         if (other.gameObject.CompareTag("Lava"))
         {
-            Destroy(other.gameObject); // Destroy the lava
+            Destroy(other.gameObject, 1f); // Destroy the lava
+            Destroy(this.gameObject, 1.1f);
         }
     }
 

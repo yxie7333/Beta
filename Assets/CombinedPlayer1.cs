@@ -12,9 +12,9 @@ public class CombinedPlayer1 : MonoBehaviour
     public float jumpForce = 7f;
     private bool isJumping = false;
     private Rigidbody2D rb;
-    private bool isCollidingWithBox = false;
-    private GameObject lightBox;
-    private bool isLeftOfBox = false;
+    //private bool isCollidingWithBox = false;
+    //private GameObject lightBox;
+    //private bool isLeftOfBox = false;
     public GameObject textForLight;
     //private Transform playerTransform;
 
@@ -136,24 +136,26 @@ public class CombinedPlayer1 : MonoBehaviour
             float moveX = Input.GetAxis("Horizontal");
 
             // If colliding with the light box and player is on the left side and 'D' is pressed
-            if (isCollidingWithBox && isLeftOfBox && Input.GetKey(KeyCode.D))
-            {
-                // Move both player and light box to the right
-                rb.velocity = new Vector2(speed, rb.velocity.y);
-                lightBox.transform.position = new Vector2(lightBox.transform.position.x + speed * Time.deltaTime, lightBox.transform.position.y);
-            }
-            // If colliding with the light box and player is on the right side and 'A' is pressed
-            else if (isCollidingWithBox && !isLeftOfBox && Input.GetKey(KeyCode.A))
-            {
-                // Move both player and light box to the left
-                rb.velocity = new Vector2(-speed, rb.velocity.y);
-                lightBox.transform.position = new Vector2(lightBox.transform.position.x - speed * Time.deltaTime, lightBox.transform.position.y);
-            }
-            else
-            {
-                // Regular movement without moving the box
-                rb.velocity = new Vector2(moveX * speed, rb.velocity.y);
-            }
+            //if (isCollidingWithBox && isLeftOfBox && Input.GetKey(KeyCode.D))
+            //{
+            //    // Move both player and light box to the right
+            //    rb.velocity = new Vector2(speed, rb.velocity.y);
+            //    lightBox.transform.position = new Vector2(lightBox.transform.position.x + speed * Time.deltaTime, lightBox.transform.position.y);
+            //}
+            //// If colliding with the light box and player is on the right side and 'A' is pressed
+            //else if (isCollidingWithBox && !isLeftOfBox && Input.GetKey(KeyCode.A))
+            //{
+            //    // Move both player and light box to the left
+            //    rb.velocity = new Vector2(-speed, rb.velocity.y);
+            //    lightBox.transform.position = new Vector2(lightBox.transform.position.x - speed * Time.deltaTime, lightBox.transform.position.y);
+            //}
+            //else
+            //{
+            //    // Regular movement without moving the box
+            //    rb.velocity = new Vector2(moveX * speed, rb.velocity.y);
+            //}
+
+            rb.velocity = new Vector2(moveX * speed, rb.velocity.y);
 
             // Jumping
             if (Input.GetButtonDown("Jump") && !isJumping)
@@ -239,14 +241,25 @@ public class CombinedPlayer1 : MonoBehaviour
             isJumping = false;
         }
 
-        if (collision.gameObject.CompareTag("LightBox"))
+        if (collision.gameObject.CompareTag("IceLake"))
         {
-            isCollidingWithBox = true;
-            lightBox = collision.gameObject;
-
-            // Check if player is on the left or right side of the box upon collision
-            isLeftOfBox = transform.position.x < lightBox.transform.position.x;
+            isJumping = false;
         }
+
+
+        if (collision.gameObject.CompareTag("Sand"))
+        {
+            isJumping = false;
+        }
+
+        //if (collision.gameObject.CompareTag("LightBox"))
+        //{
+        //    isCollidingWithBox = true;
+        //    lightBox = collision.gameObject;
+
+        //    // Check if player is on the left or right side of the box upon collision
+        //    isLeftOfBox = transform.position.x < lightBox.transform.position.x;
+        //}
 
         if (collision.gameObject.CompareTag("Water") || collision.gameObject.CompareTag("Lava") || collision.gameObject.CompareTag("Grass"))
         {
@@ -268,14 +281,14 @@ public class CombinedPlayer1 : MonoBehaviour
 
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("LightBox"))
-        {
-            isCollidingWithBox = false;
-            lightBox = null;
-        }
-    }
+    //private void OnCollisionExit2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag("LightBox"))
+    //    {
+    //        isCollidingWithBox = false;
+    //        lightBox = null;
+    //    }
+    //}
 
     private void SetTextVisibility(bool isVisible)
     {

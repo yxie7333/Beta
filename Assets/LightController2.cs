@@ -30,9 +30,10 @@ public class LightController2 : MonoBehaviour
 
             reflectedLightBeam.transform.position = new Vector3(21.97f, -0.11f, 0);
             reflectedLightBeam.gameObject.SetActive(true);
-            Destroy(water);
-            iceCube.SetActive(true);
 
+            //Destroy(water);
+            //iceCube.SetActive(true);
+            StartCoroutine(DestroyWaterAndShowIceCubeAfterDelay(1f));
 
         }
         else
@@ -45,5 +46,18 @@ public class LightController2 : MonoBehaviour
     {
         lightBeam.position = rayOrigin;
         lightBeam.up = direction;
+    }
+
+
+    System.Collections.IEnumerator DestroyWaterAndShowIceCubeAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (water != null)
+        {
+            Destroy(water);
+        }
+
+        iceCube.SetActive(true);
     }
 }

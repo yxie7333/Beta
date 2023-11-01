@@ -46,7 +46,8 @@ public class IceCube : MonoBehaviour
 
         if (other.gameObject.CompareTag("Lava"))
         {
-            Destroy(other.gameObject); // Destroy the lava
+            Destroy(other.gameObject, 1f); // Destroy the lava
+            Destroy(this.gameObject, 1.1f);
         }
     }
 

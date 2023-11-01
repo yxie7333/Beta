@@ -27,7 +27,6 @@ public class LightControllerForLevel2 : MonoBehaviour
         {
             if (hit.collider != null)
             {
-                Debug.Log("here");
             }
             //Vector2 reflectedDirection = Vector2.Reflect(primaryLightBeam.up, hit.normal);
             //UpdateReflectedBeam(reflectedLightBeam, hit.point, reflectedDirection);

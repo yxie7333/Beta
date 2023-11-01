@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     {
         float moveX = Input.GetAxis("Horizontal");
 
-        // If colliding with the light box and player is on the left side and 'D' is pressed
+        //If colliding with the light box and player is on the left side and 'D' is pressed
         if (isCollidingWithBox && isLeftOfBox && Input.GetKey(KeyCode.D))
         {
             // Move both player and light box to the right
@@ -74,6 +74,11 @@ public class Player : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("ground"))
+        {
+            isJumping = false;
+        }
+
+        if (collision.gameObject.CompareTag("Sand"))
         {
             isJumping = false;
         }

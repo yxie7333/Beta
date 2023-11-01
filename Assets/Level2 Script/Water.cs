@@ -31,7 +31,7 @@ public class Water : MonoBehaviour
                     //player.transform.position = Vector3.MoveTowards(player.transform.position, position1,
                     //      waterSpeed * Time.deltaTime);
                     rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
-                    Debug.Log("Move to Position1!");
+                    //Debug.Log("Move to Position1!");
 
                 }
                 if (player.transform.position.x >= position1.x && player.transform.position.x <= position2.x &&
@@ -40,7 +40,7 @@ public class Water : MonoBehaviour
                     //player.GetComponent<Rigidbody2D>().gravityScale = 1;
                     player.transform.position = Vector3.MoveTowards(player.transform.position, position2,
                             waterSpeed * Time.deltaTime);
-                    Debug.Log("Move to Position2!");
+                    //Debug.Log("Move to Position2!");
                 }
             }
             else
@@ -51,7 +51,7 @@ public class Water : MonoBehaviour
                     //player.GetComponent<Rigidbody2D>().gravityScale = 1;
                     player.transform.position = Vector3.MoveTowards(player.transform.position, position1,
                             waterSpeed * Time.deltaTime);
-                    Debug.Log("Move to Position1!");
+                    //Debug.Log("Move to Position1!");
                 }
             }
         }
