@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,6 +35,7 @@ public class CombinedPlayer1 : MonoBehaviour
     private float playerMass = 1f;
 
     public Text resizeHintText;
+    public Text weightHintText;
 
     //Magnet
 
@@ -66,6 +67,11 @@ public class CombinedPlayer1 : MonoBehaviour
     private float analyticTime = 0.0f;
     private float currentTime = 0.0f;
 
+    //Triangle Display
+    // private TriangleController triangleController;
+    public GameObject[] arrows;
+    public float arrowDistance = 1f;
+
     [System.Serializable]
     public class AnalyticPath
     {
@@ -82,6 +88,7 @@ public class CombinedPlayer1 : MonoBehaviour
     // metric 2
     private int resizeDirection = 0;
     private int resizeCount = 0;
+
 
     [System.Serializable]
     public class AnalyticShape
@@ -102,6 +109,7 @@ public class CombinedPlayer1 : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         resizeHintText.enabled = false; // 初始时设置提示为不可见
         rb.mass = playerMass;
+        weightHintText.enabled = false;
         // sound
         eatenGemCount = 0;
 
@@ -121,6 +129,10 @@ public class CombinedPlayer1 : MonoBehaviour
 
         // Analytics
         lastPlayerPosition = transform.position;
+
+        //TriangleController
+        // triangleController = GetComponent<TriangleController>();
+        SetArrowsActive(false); // Ensure arrows are inactive at the start
 
     }
 
@@ -425,6 +437,8 @@ public class CombinedPlayer1 : MonoBehaviour
                     AnalyticShape analyticShape = new AnalyticShape();
                     analyticShape.resizeCount = resizeCount.ToString();
                     analyticShape.resizeDirection = resizeDirection.ToString();
+                    //Arrow Disappear
+                    SetArrowsActive(false);
 
                     string analyticJson = JsonUtility.ToJson(analyticShape);
                     string DBurl = "https://yanjungu-unity-analytics-default-rtdb.firebaseio.com/"
@@ -469,6 +483,8 @@ public class CombinedPlayer1 : MonoBehaviour
             canResize = true;
             canGrow = true;
             resizeHintText.enabled = true;
+            SetArrowsActive(true);
+            weightHintText.enabled = false;
 
             eatenGemCount += 1;
 
@@ -513,6 +529,7 @@ public class CombinedPlayer1 : MonoBehaviour
                 else
                 {
                     stoneRb.constraints = RigidbodyConstraints2D.FreezeAll;  // 冻结石头，防止玩家移动它
+                    weightHintText.enabled = true;
                 }
             }
         }
@@ -549,5 +566,17 @@ public class CombinedPlayer1 : MonoBehaviour
         audioSource.PlayOneShot(wallTouchSound);
     }
 
-}
+    private void SetArrowsActive(bool isActive)
+    {
+        foreach (GameObject arrow in arrows)
+        {
+            if (isActive)
+            {
+                Vector3 direction = arrow.transform.localPosition.normalized;
+                arrow.transform.position = transform.position + direction * arrowDistance;
+            }
+            arrow.SetActive(isActive);
+        }
+    }
 
+}
