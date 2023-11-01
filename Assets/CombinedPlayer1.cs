@@ -56,8 +56,6 @@ public class CombinedPlayer1 : MonoBehaviour
     // sound
     public int eatenGemCount = 0;
     public SpriteMask mask;
-    public AudioClip wallTouchSound;
-    private AudioSource audioSource;
 
 
     // analytics
@@ -100,7 +98,7 @@ public class CombinedPlayer1 : MonoBehaviour
 
     void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
+
     }
 
     private void Start()
@@ -114,11 +112,26 @@ public class CombinedPlayer1 : MonoBehaviour
         eatenGemCount = 0;
 
         //playerTransform = this.transform;
-        SetTextVisibility(false, textForBox);
-        SetTextVisibility(false, textForLight);
-        SetTextVisibility(false, textForGrass);
-        SetTextVisibility(false, textForIce);
-        SetTextVisibility(false , textForLava);
+        if (textForBox != null)
+        {
+            SetTextVisibility(false, textForBox);
+        }
+        if (textForLight != null)
+        {
+            SetTextVisibility(false, textForLight);
+        }
+        if (textForGrass !=  null)
+        {
+            SetTextVisibility(false, textForGrass);
+        }
+        if (textForIce != null) 
+        {
+            SetTextVisibility(false, textForIce);
+        }
+        if (textForLava != null)
+        {
+            SetTextVisibility(false, textForLava);
+        }
 
 
         //Magnet
@@ -138,43 +151,45 @@ public class CombinedPlayer1 : MonoBehaviour
 
     private void Update()
     {
-
-        if (transform.position.x > -8f && transform.position.x < -3.2f)
+        // for element UI Text
+        if (textForBox != null && textForLight != null && textForGrass != null && textForIce != null && textForLava!=null)
         {
-            SetTextVisibility(true, textForBox);
+            if (transform.position.x > -8f && transform.position.x < -3.2f)
+            {
+                SetTextVisibility(true, textForBox);
+            }
+            else
+            {
+                SetTextVisibility(false, textForBox);
+            }
+            if (transform.position.x > -3.2f && transform.position.x < 0f)
+            {
+                SetTextVisibility(true, textForLight);
+                SetTextVisibility(true, textForGrass);
+            }
+            else
+            {
+                SetTextVisibility(false, textForLight);
+                SetTextVisibility(false, textForGrass);
+            }
+            if (transform.position.x > 13f && transform.position.x < 24f)
+            {
+                SetTextVisibility(true, textForIce);
+            }
+            else
+            {
+                SetTextVisibility(false, textForIce);
+            }
+            if (transform.position.x > 25f && transform.position.x < 46f)
+            {
+                SetTextVisibility(true, textForLava);
+            }
+            else
+            {
+                SetTextVisibility(false, textForLava);
+            }
         }
-        else
-        {
-            SetTextVisibility(false, textForBox);
-        }
-        if (transform.position.x > -3.2f && transform.position.x < 0f)
-        {
-            SetTextVisibility(true, textForLight);
-            SetTextVisibility(true, textForGrass);
-        }
-        else
-        {
-            SetTextVisibility(false, textForLight);
-            SetTextVisibility(false, textForGrass);
-        }
-        if (transform.position.x > 13f && transform.position.x < 24f)
-        {
-            SetTextVisibility(true, textForIce);
-        }
-        else
-        {
-            SetTextVisibility(false, textForIce);
-        }
-        if (transform.position.x > 25f && transform.position.x < 46f)
-        {
-            SetTextVisibility(true, textForLava);
-        }
-        else
-        {
-            SetTextVisibility(false, textForLava);
-        }
-
-
+        
         if (transform.position.x > 157f)
         {
             Debug.Log("HandleMovement and HandleResize should be active now");
@@ -318,13 +333,11 @@ public class CombinedPlayer1 : MonoBehaviour
 
         if (collision.gameObject.CompareTag("LeftWall"))
         {
-            PlayWallTouchSound(-1);
             SoundScreenEffect.Instance.FlashLeft();
 
         }
         else if (collision.gameObject.CompareTag("RightWall"))
         {
-            PlayWallTouchSound(1);
             SoundScreenEffect.Instance.FlashRight();
 
         }
@@ -559,11 +572,6 @@ public class CombinedPlayer1 : MonoBehaviour
             highlightedObject = null;
             RecallActivated = 0;
         }
-    }
-    private void PlayWallTouchSound(float pan)
-    {
-        audioSource.panStereo = pan;
-        audioSource.PlayOneShot(wallTouchSound);
     }
 
     private void SetArrowsActive(bool isActive)
