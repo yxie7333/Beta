@@ -28,7 +28,7 @@ public class Level1Player : MonoBehaviour
     private bool canGrow = false; // Start with player not being able to grow
     private float playerMass = 1f;
 
-    public Text resizeHintText;
+    //public Text resizeHintText;
 
 
     // sound
@@ -86,7 +86,7 @@ public class Level1Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
-        resizeHintText.enabled = false; // 初始时设置提示为不可见
+        //resizeHintText.enabled = false; // 初始时设置提示为不可见
         rb.mass = playerMass;
 
         // sound
@@ -226,7 +226,7 @@ public class Level1Player : MonoBehaviour
                 if (hasGrown)
                 {
                     canGrow = false;
-                    resizeHintText.enabled = false;
+                    //resizeHintText.enabled = false;
                     // analytic
                     string levelInf = "1";
                     string stageInf = "2";
@@ -279,7 +279,7 @@ public class Level1Player : MonoBehaviour
             Debug.Log("Gem detected");
             canResize = true;
             canGrow = true;
-            resizeHintText.enabled = true;
+            //resizeHintText.enabled = true;
             SetArrowsActive(true);
 
             eatenGemCount += 1;

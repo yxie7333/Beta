@@ -20,8 +20,10 @@ public class CombinedPlayer1 : MonoBehaviour
     public GameObject textForGrass;
     public GameObject textForIce;
     public GameObject textForLava;
+    public LayerMask groundLayer; // assign the Ground layer here in the editor
+    public float groundedRayLength = 0.1f;
 
-    
+
     //private Transform playerTransform;
 
 
@@ -39,9 +41,11 @@ public class CombinedPlayer1 : MonoBehaviour
 
     //Magnet
 
-    public Vector2 targetPosition = new Vector2(143f, -67f); // 设置玩家需要到达的位置
+    public Vector2 targetPosition = new Vector2(149f, -67f); // 设置玩家需要到达的位置
     public float proximityThreshold = 2f; // 当玩家与目标位置之间的距离小于此值时，会显示文本
     public Text instructionText; // 在Unity中将InstructionText拖放到这个字段中
+    public Vector2 targetPosition2 = new Vector2(153f, -63f); // 设置玩家需要到达的位置
+    public Text instruction2Text; // 在Unity中将Instruction2Text拖放到这个字段中
 
     // Recall
     public Material highlightMaterial;
@@ -139,6 +143,7 @@ public class CombinedPlayer1 : MonoBehaviour
 
         //Magnet
         instructionText.enabled = false; // 初始时隐藏文本
+        instruction2Text.enabled = false;
 
         // Recall
         RecallText.enabled = false;
@@ -199,9 +204,23 @@ public class CombinedPlayer1 : MonoBehaviour
             HandleMovement();
             HandleResize();
         }
-        if (transform.position.x <= 157f)
+        if (transform.position.x <= 68f)
         {
             float moveX = Input.GetAxis("Horizontal");
+            rb.velocity = new Vector2(moveX * speed, rb.velocity.y);
+
+            CheckGrounded();
+
+            if ((Input.GetButtonDown("Jump") && !isJumping))
+            {
+                rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+                isJumping = true;
+            }
+        }
+        if (transform.position.x <= 157f && transform.position.x >= 68f)
+        {
+            
+            //float moveX = Input.GetAxis("Horizontal");
 
             // If colliding with the light box and player is on the left side and 'D' is pressed
             //if (isCollidingWithBox && isLeftOfBox && Input.GetKey(KeyCode.D))
@@ -223,6 +242,17 @@ public class CombinedPlayer1 : MonoBehaviour
             //    rb.velocity = new Vector2(moveX * speed, rb.velocity.y);
             //}
 
+            //rb.velocity = new Vector2(moveX * speed, rb.velocity.y);
+
+            //// Jumping
+            //if (Input.GetButtonDown("Jump") && !isJumping)
+            //{
+            //    rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+            //    isJumping = true;
+            //}
+
+            float moveX = Input.GetAxis("Horizontal");
+
             rb.velocity = new Vector2(moveX * speed, rb.velocity.y);
 
             // Jumping
@@ -231,6 +261,8 @@ public class CombinedPlayer1 : MonoBehaviour
                 rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
                 isJumping = true;
             }
+
+
         }
 
 
@@ -258,6 +290,16 @@ public class CombinedPlayer1 : MonoBehaviour
         else if (instructionText.enabled) // 如果玩家远离目标区域，并且文本当前是可见的
         {
             instructionText.enabled = false; // 隐藏文本
+        }
+
+        float distanceToTarget2 = Vector2.Distance(transform.position, targetPosition2);
+        if (distanceToTarget2 <= proximityThreshold)
+        {
+            instruction2Text.enabled = true; // 当玩家接近目标位置时，显示文本
+        }
+        else if (instructionText.enabled) // 如果玩家远离目标区域，并且文本当前是可见的
+        {
+            instruction2Text.enabled = false; // 隐藏文本
         }
 
         // Recall Text
@@ -302,6 +344,54 @@ public class CombinedPlayer1 : MonoBehaviour
        
     }
 
+    private void CheckGrounded()
+    {
+        //RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, groundedRayLength, groundLayer);
+        //if (hit.collider != null)
+        //{
+        //    isJumping = false;
+        //}
+
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, groundedRayLength, groundLayer);
+        float yPos = transform.position.y;
+
+        //if (hit.collider != null)
+        //{
+        //    Debug.Log(hit.collider.name);
+        //}
+
+        //if (hit.collider != null
+        //   || (yPos >= -2.486f && yPos <= -2.48f)
+        //   || (yPos >= 2.48f && yPos <= 2.486f)
+        //   || hit.collider.CompareTag("IceLake")
+        //   || hit.collider.CompareTag("Sand"))
+        //{
+        //    isJumping = false;
+        //}
+        //else
+        //{
+        //    isJumping = true;
+        //}
+
+        if (hit.collider != null)
+        {
+            isJumping = false;
+        }
+        else if (yPos >= -2.4866f && yPos <= -2.48f)
+        {
+            isJumping = false;
+        }
+        else
+        {
+            isJumping = true;
+        }
+
+
+
+    }
+
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("ground") || collision.gameObject.CompareTag("Recall"))
@@ -313,6 +403,11 @@ public class CombinedPlayer1 : MonoBehaviour
         {
             isJumping = false;
         }
+
+        //if (collision.gameObject.CompareTag("LightBox"))
+        //{
+        //    isJumping = false;
+        //}
 
 
         if (collision.gameObject.CompareTag("Sand"))
@@ -587,11 +682,11 @@ public class CombinedPlayer1 : MonoBehaviour
     {
         foreach (GameObject arrow in arrows)
         {
-            if (isActive)
-            {
-                Vector3 direction = arrow.transform.localPosition.normalized;
-                arrow.transform.position = transform.position + direction * arrowDistance;
-            }
+           // if (isActive)
+           //{
+           //    Vector3 direction = arrow.transform.localPosition.normalized;
+           //    arrow.transform.position = transform.position + direction * arrowDistance;
+           //}
             arrow.SetActive(isActive);
         }
     }
