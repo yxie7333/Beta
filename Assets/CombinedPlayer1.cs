@@ -39,9 +39,11 @@ public class CombinedPlayer1 : MonoBehaviour
 
     //Magnet
 
-    public Vector2 targetPosition = new Vector2(143f, -67f); // 设置玩家需要到达的位置
+    public Vector2 targetPosition = new Vector2(149f, -67f); // 设置玩家需要到达的位置
     public float proximityThreshold = 2f; // 当玩家与目标位置之间的距离小于此值时，会显示文本
     public Text instructionText; // 在Unity中将InstructionText拖放到这个字段中
+    public Vector2 targetPosition2 = new Vector2(153f, -63f); // 设置玩家需要到达的位置
+    public Text instruction2Text; // 在Unity中将Instruction2Text拖放到这个字段中
 
     // Recall
     public Material highlightMaterial;
@@ -139,6 +141,7 @@ public class CombinedPlayer1 : MonoBehaviour
 
         //Magnet
         instructionText.enabled = false; // 初始时隐藏文本
+        instruction2Text.enabled = false;
 
         // Recall
         RecallText.enabled = false;
@@ -258,6 +261,16 @@ public class CombinedPlayer1 : MonoBehaviour
         else if (instructionText.enabled) // 如果玩家远离目标区域，并且文本当前是可见的
         {
             instructionText.enabled = false; // 隐藏文本
+        }
+
+        float distanceToTarget2 = Vector2.Distance(transform.position, targetPosition2);
+        if (distanceToTarget2 <= proximityThreshold)
+        {
+            instruction2Text.enabled = true; // 当玩家接近目标位置时，显示文本
+        }
+        else if (instructionText.enabled) // 如果玩家远离目标区域，并且文本当前是可见的
+        {
+            instruction2Text.enabled = false; // 隐藏文本
         }
 
         // Recall Text
@@ -587,11 +600,11 @@ public class CombinedPlayer1 : MonoBehaviour
     {
         foreach (GameObject arrow in arrows)
         {
-            if (isActive)
-            {
-                Vector3 direction = arrow.transform.localPosition.normalized;
-                arrow.transform.position = transform.position + direction * arrowDistance;
-            }
+           // if (isActive)
+           //{
+           //    Vector3 direction = arrow.transform.localPosition.normalized;
+           //    arrow.transform.position = transform.position + direction * arrowDistance;
+           //}
             arrow.SetActive(isActive);
         }
     }

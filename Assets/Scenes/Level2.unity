@@ -9641,7 +9641,7 @@ PointEffector2D:
   m_UseColliderMask: 1
   m_ColliderMask:
     serializedVersion: 2
-    m_Bits: 320
+    m_Bits: 256
   m_ForceMagnitude: -10
   m_ForceVariation: 0
   m_DistanceScale: 1
@@ -9772,7 +9772,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 5
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.9528302, g: 0.06741722, b: 0.06741722, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -9806,6 +9806,7 @@ GameObject:
   - component: {fileID: 471356494}
   - component: {fileID: 471356493}
   - component: {fileID: 471356496}
+  - component: {fileID: 471356497}
   m_Layer: 0
   m_Name: LightBox
   m_TagString: LightBox
@@ -9919,7 +9920,7 @@ Transform:
   m_GameObject: {fileID: 471356492}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -179.49, y: 10.45, z: 0}
+  m_LocalPosition: {x: -180.03, y: 10.46, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9940,6 +9941,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minX: -181
   maxX: -175
+--- !u!50 &471356497
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471356492}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &503828107
 GameObject:
   m_ObjectHideFlags: 0
@@ -10111,7 +10139,7 @@ Transform:
   m_GameObject: {fileID: 569831425}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -163.09175, y: 6.2, z: -10}
+  m_LocalPosition: {x: -164.86667, y: 6.2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11325,7 +11353,7 @@ PointEffector2D:
   m_UseColliderMask: 1
   m_ColliderMask:
     serializedVersion: 2
-    m_Bits: 320
+    m_Bits: 256
   m_ForceMagnitude: -10
   m_ForceVariation: 0
   m_DistanceScale: 1
@@ -11456,7 +11484,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 5
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.06808472, g: 0.12700675, b: 0.9622642, a: 1}
+  m_Color: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -12103,6 +12131,7 @@ GameObject:
   - component: {fileID: 1740644815}
   - component: {fileID: 1740644814}
   - component: {fileID: 1740644813}
+  - component: {fileID: 1740644816}
   m_Layer: 0
   m_Name: LightBoxSecond
   m_TagString: LightBox
@@ -12223,6 +12252,33 @@ Transform:
   - {fileID: 1717170134}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &1740644816
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1740644812}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &1760373233
 GameObject:
   m_ObjectHideFlags: 0
