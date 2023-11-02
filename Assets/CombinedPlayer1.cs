@@ -8,6 +8,9 @@ using static CombinedPlayer1;
 
 public class CombinedPlayer1 : MonoBehaviour
 {
+    // checkpoint
+    public CheckPoint CheckPointScript;
+
     public float speed = 5f;
     public float jumpForce = 7f;
     private bool isJumping = false;
@@ -48,6 +51,9 @@ public class CombinedPlayer1 : MonoBehaviour
     public Text instruction2Text; // 在Unity中将Instruction2Text拖放到这个字段中
 
     // Recall
+    public Material WaterMaterial1;
+    public Material WaterMaterial2;
+    public GameObject waterObject;
     public Material highlightMaterial;
     private Material originalMaterial;
     private GameObject highlightedObject;
@@ -274,11 +280,39 @@ public class CombinedPlayer1 : MonoBehaviour
         else
         {
             RemoveHighlight();
+            RecallActivated = 0;
         }
         if (highlightedObject != null)
         {
             RecallActivated = 1;
 
+        }
+        void HighlightInteractableObjects()
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactDistance);
+            foreach (Collider2D collider in colliders)
+            {
+                if (collider.CompareTag("Recall"))
+                {
+                    // 高亮物体，可以通过修改材质颜色等方式来实现
+                    highlightedObject = collider.gameObject;
+                    originalMaterial = highlightedObject.GetComponent<Renderer>().material;
+                    // 实现高亮效果，改变材质颜色等
+                    //highlightedObject.GetComponent<Renderer>().material = highlightMaterial;
+                    waterObject.GetComponent<Renderer>().material = WaterMaterial2;
+                }
+            }
+        }
+        void RemoveHighlight()
+        {
+            if (highlightedObject != null)
+            {
+                // 移除高亮效果，还原材质颜色等
+                highlightedObject.GetComponent<Renderer>().material = originalMaterial;
+                highlightedObject = null;
+                waterObject.GetComponent<Renderer>().material = WaterMaterial1;
+
+            }
         }
 
         //Magnet
@@ -426,7 +460,14 @@ public class CombinedPlayer1 : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Water") || collision.gameObject.CompareTag("Lava") || collision.gameObject.CompareTag("Grass"))
         {
-            transform.position = new Vector2(-3.84f, 0f);
+            if (CheckPointScript.ischecked == true)
+            {
+                transform.position = new Vector3(114.68f, -67.48499f);
+            }
+            else 
+            { 
+                transform.position = new Vector2(-3.84f, 0f);
+            }
         }
 
         if (collision.gameObject.CompareTag("LeftWall"))
@@ -651,32 +692,7 @@ public class CombinedPlayer1 : MonoBehaviour
             }
         }
     }
-    void HighlightInteractableObjects()
-    {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactDistance);
-        foreach (Collider2D collider in colliders)
-        {
-            if (collider.CompareTag("Recall"))
-            {
-                // 高亮物体，可以通过修改材质颜色等方式来实现
-                highlightedObject = collider.gameObject;
-                originalMaterial = highlightedObject.GetComponent<Renderer>().material;
-                // 实现高亮效果，改变材质颜色等
-                //highlightedObject.GetComponent<Renderer>().material = highlightMaterial;
 
-            }
-        }
-    }
-    void RemoveHighlight()
-    {
-        if (highlightedObject != null)
-        {
-            // 移除高亮效果，还原材质颜色等
-            highlightedObject.GetComponent<Renderer>().material = originalMaterial;
-            highlightedObject = null;
-            RecallActivated = 0;
-        }
-    }
 
     private void SetArrowsActive(bool isActive)
     {

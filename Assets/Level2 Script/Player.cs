@@ -13,6 +13,12 @@ public class Player : MonoBehaviour
     //private bool isLeftOfBox = false;
 
     // Recall
+    public Material WaterMaterial1;
+    public Material WaterMaterial2;
+    public Material WaterMaterial3;
+    public Material WaterMaterial4;
+    public GameObject waterObject1;
+    public GameObject waterObject2;
     public Material highlightMaterial;
     private Material originalMaterial;
     private GameObject highlightedObject;
@@ -63,6 +69,7 @@ public class Player : MonoBehaviour
         else
         {
             RemoveHighlight();
+            RecallActivated = 0;
         }
         if (highlightedObject != null)
         {
@@ -102,6 +109,7 @@ public class Player : MonoBehaviour
     //    }
     //}
 
+
     // Recall
     void HighlightInteractableObjects()
     {
@@ -115,7 +123,8 @@ public class Player : MonoBehaviour
                 originalMaterial = highlightedObject.GetComponent<Renderer>().material;
                 // 实现高亮效果，改变材质颜色等
                 //highlightedObject.GetComponent<Renderer>().material = highlightMaterial;
-
+                waterObject1.GetComponent<Renderer>().material = WaterMaterial2;
+                waterObject2.GetComponent<Renderer>().material = WaterMaterial4;
             }
         }
     }
@@ -126,7 +135,8 @@ public class Player : MonoBehaviour
             // 移除高亮效果，还原材质颜色等
             highlightedObject.GetComponent<Renderer>().material = originalMaterial;
             highlightedObject = null;
-            RecallActivated = 0;
+            waterObject1.GetComponent<Renderer>().material = WaterMaterial1;
+            waterObject2.GetComponent<Renderer>().material = WaterMaterial3;
         }
     }
 }

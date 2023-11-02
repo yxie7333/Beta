@@ -34,7 +34,7 @@ public class Boat : MonoBehaviour
                     myPlayer.transform.position = Vector3.MoveTowards(myPlayer.transform.position, targetPosition,
                         mySpeed * Time.deltaTime);
                 }
-                Debug.Log("Boat is coming!");
+                //Debug.Log("Boat is coming!");
             }
         }
 
@@ -48,7 +48,7 @@ public class Boat : MonoBehaviour
                     mySpeed * Time.deltaTime);
 
             }
-            Debug.Log("RecallActivated = 1");
+            //Debug.Log("RecallActivated = 1");
         }
     }
 
@@ -57,7 +57,7 @@ public class Boat : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             onBoat = 1;
-            Debug.Log("Player is on the boat!");
+            //Debug.Log("Player is on the boat!");
         }
     }
 
@@ -66,12 +66,12 @@ public class Boat : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             onBoat = 0;
-            Debug.Log("Player is not on the boat!");
+            //Debug.Log("Player is not on the boat!");
         }
     }
 
     public void Interact()
     {
-        Debug.Log("Interacting");
+        //Debug.Log("Interacting");
     }
 }
