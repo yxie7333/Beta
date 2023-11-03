@@ -15,8 +15,8 @@ public class FollowPlayer : MonoBehaviour
     public int levelNum;
     private Camera cam;
 
-    public Image enterArrow;
-    public Image exitArrow;
+    public SpriteRenderer enterArrow;
+    public SpriteRenderer exitArrow;
 
     private int enterSoundZone = 0;
     public TextMeshProUGUI soundDisplayText;
