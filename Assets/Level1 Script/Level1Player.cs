@@ -227,21 +227,9 @@ public class Level1Player : MonoBehaviour
                 {
                     canGrow = false;
                     //resizeHintText.enabled = false;
-                    // analytic
-                    string levelInf = "1";
-                    string stageInf = "2";
-                    resizeCount += 1;
-                    AnalyticShape analyticShape = new AnalyticShape();
-                    analyticShape.resizeCount = resizeCount.ToString();
-                    analyticShape.resizeDirection = resizeDirection.ToString();
+                   
                     //Arrow Disappear
                     SetArrowsActive(false);
-
-                    string analyticJson = JsonUtility.ToJson(analyticShape);
-                    string DBurl = "https://yanjungu-unity-analytics-default-rtdb.firebaseio.com/"
-                                + "levels/" + levelInf + "/stages/" + stageInf + "/players/" + playerID + ".json";
-
-                    RestClient.Post(DBurl, analyticJson);
                 }
             }
         }
@@ -289,7 +277,7 @@ public class Level1Player : MonoBehaviour
 
                 if (eatenGemCount == 1)
                 {
-                    playerMask.transform.localScale = new Vector3(4, 4, 1);
+                    playerMask.transform.localScale = new Vector3(15, 15, 1);
                     if (gem1Mask != null)
                     {
                         gem1Mask.transform.localScale = new Vector3(0, 0, 1);
@@ -305,7 +293,7 @@ public class Level1Player : MonoBehaviour
                 }
                 else if (eatenGemCount == 2)
                 {
-                    playerMask.transform.localScale = new Vector3(7, 7, 1);
+                    playerMask.transform.localScale = new Vector3(20, 20, 1);
                     if (gem1Mask != null)
                     {
                         gem1Mask.transform.localScale = new Vector3(0, 0, 1);

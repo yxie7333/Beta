@@ -582,21 +582,8 @@ public class CombinedPlayer1 : MonoBehaviour
                 {
                     canGrow = false;
                     resizeHintText.enabled = false;
-                    // analytic
-                    string levelInf = "1";
-                    string stageInf = "2";
-                    resizeCount += 1;
-                    AnalyticShape analyticShape = new AnalyticShape();
-                    analyticShape.resizeCount = resizeCount.ToString();
-                    analyticShape.resizeDirection = resizeDirection.ToString();
                     //Arrow Disappear
                     SetArrowsActive(false);
-
-                    string analyticJson = JsonUtility.ToJson(analyticShape);
-                    string DBurl = "https://yanjungu-unity-analytics-default-rtdb.firebaseio.com/"
-                                + "levels/" + levelInf + "/stages/" + stageInf + "/players/" + playerID + ".json";
-
-                    RestClient.Post(DBurl, analyticJson);
                 }
             }
         }
