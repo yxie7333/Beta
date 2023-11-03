@@ -99,15 +99,7 @@ public class CombinedPlayer1 : MonoBehaviour
     private int resizeCount = 0;
 
 
-    [System.Serializable]
-    public class AnalyticShape
-    {
-        public string resizeCount;
-        public string resizeDirection;
-    }
-
-
-    void Awake()
+     void Awake()
     {
 
     }

@@ -230,6 +230,20 @@ public class Level1Player : MonoBehaviour
                    
                     //Arrow Disappear
                     SetArrowsActive(false);
+
+                    //analysis
+                    string levelInf = "1";
+                    string stageInf = "2";
+                    resizeCount += 1;
+                    AnalyticShape analyticShape = new AnalyticShape();
+                    analyticShape.resizeCount = resizeCount.ToString();
+                    analyticShape.resizeDirection = resizeDirection.ToString();
+
+                    string analyticJson = JsonUtility.ToJson(analyticShape);
+                    string DBurl = "https://yanjungu-unity-analytics-default-rtdb.firebaseio.com/"
+                                + "levels/" + levelInf + "/stages/" + stageInf + "/players/" + playerID + ".json";
+
+                    RestClient.Post(DBurl, analyticJson);
                 }
             }
         }
