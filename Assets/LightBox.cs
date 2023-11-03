@@ -96,7 +96,7 @@ public class LightBox : MonoBehaviour
 
             string dataJson = JsonUtility.ToJson(collisionData);
             string DBurl = "https://yanjungu-unity-analytics-default-rtdb.firebaseio.com/" +
-                           "levels/" + "tutorial" +
+                           "levels/" + "0" +
                            "/stages/" + "1" +
                            "/players/" + playerID + ".json";
             RestClient.Post(DBurl, dataJson);

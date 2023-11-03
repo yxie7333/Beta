@@ -112,6 +112,11 @@ public class Player : MonoBehaviour
             isJumping = false;
         }
 
+        if (collision.gameObject.CompareTag("Lava"))
+        {
+            transform.position = new Vector3(-134.3f, 1.85f);
+        }
+
         //if (collision.gameObject.CompareTag("LightBox"))
         //{
         //    isCollidingWithBox = true;

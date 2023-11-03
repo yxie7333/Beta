@@ -10244,7 +10244,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 384
   maxBeamLength: 100
-  water: {fileID: 303407868}
+  water1: {fileID: 776251679}
+  water2: {fileID: 303407868}
   iceCube: {fileID: 1836455592}
 --- !u!1 &151871944
 GameObject:
@@ -10540,8 +10541,8 @@ Transform:
   m_GameObject: {fileID: 303407868}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -156.7968, y: 0.0784, z: 0}
-  m_LocalScale: {x: 2.91, y: 12.15687, z: 1}
+  m_LocalPosition: {x: -156.7968, y: 0.0438, z: 0}
+  m_LocalScale: {x: 2.91, y: 12.087967, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -10560,7 +10561,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waterSpeed: 8
   position1: {x: -159, y: 8, z: 0}
-  position2: {x: -136, y: 8, z: 0}
+  position2: {x: -136.5, y: 8, z: 0}
   playerScript: {fileID: 683882391}
   originPosition: {x: -159, y: -1.5, z: 0}
   jumpForce: 0.1
@@ -10873,7 +10874,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 340766515}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51486dba5c774bf41ab9750d99afdc72, type: 3}
+  m_Script: {fileID: 11500000, guid: d192a7243085ea24c969f1bc4ac29014, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &394694278 stripped
@@ -11797,7 +11798,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waterSpeed: 8
   position1: {x: -159, y: 8, z: 0}
-  position2: {x: -136, y: 8, z: 0}
+  position2: {x: -136.5, y: 8, z: 0}
   playerScript: {fileID: 683882391}
   originPosition: {x: -159, y: -1.5, z: 0}
   jumpForce: 0.1
@@ -13177,7 +13178,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1582778044}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7dbb1204440cb3478890edb71ee029b, type: 3}
+  m_Script: {fileID: 11500000, guid: bbcfb1f905e13994b9f5291165fe881b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1591105038

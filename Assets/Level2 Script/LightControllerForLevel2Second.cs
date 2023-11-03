@@ -10,7 +10,8 @@ public class LightControllerForLevel2Second : MonoBehaviour
 
     public LayerMask mirrorLayer;
     public float maxBeamLength = 100f;
-    public GameObject water;
+    public GameObject water1;
+    public GameObject water2;
     public GameObject iceCube;
 
     void Start()
@@ -27,9 +28,12 @@ public class LightControllerForLevel2Second : MonoBehaviour
         if (hit.collider != null && hit.collider.gameObject.name == "SecondMirror")
         {
             reflectedLightBeam.gameObject.SetActive(true);
-            Destroy(water);
-            iceCube.SetActive(true);
-
+            Destroy(water1);
+            Destroy(water2);
+            if (iceCube != null)
+            {
+                iceCube.SetActive(true);
+            }
         }
         else
         {

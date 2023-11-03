@@ -108,7 +108,7 @@ public class Level1Player : MonoBehaviour
         HandleResize();
 
         // analytics
-        if (playerMask.transform.localScale.x < 2 && playerMask.transform.localScale.y < 2) // only collect data without vision
+        if (transform.position.x > 137f && transform.position.x < 180f && transform.position.y > -52f && transform.position.y < -17f) // only collect data without vision
         {
             if (transform.position != lastPlayerPosition) // posiiton change
             {
@@ -230,6 +230,20 @@ public class Level1Player : MonoBehaviour
                    
                     //Arrow Disappear
                     SetArrowsActive(false);
+
+                    //analysis
+                    string levelInf = "1";
+                    string stageInf = "2";
+                    resizeCount += 1;
+                    AnalyticShape analyticShape = new AnalyticShape();
+                    analyticShape.resizeCount = resizeCount.ToString();
+                    analyticShape.resizeDirection = resizeDirection.ToString();
+
+                    string analyticJson = JsonUtility.ToJson(analyticShape);
+                    string DBurl = "https://yanjungu-unity-analytics-default-rtdb.firebaseio.com/"
+                                + "levels/" + levelInf + "/stages/" + stageInf + "/players/" + playerID + ".json";
+
+                    RestClient.Post(DBurl, analyticJson);
                 }
             }
         }
