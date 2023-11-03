@@ -363,11 +363,11 @@ public class Level1Player : MonoBehaviour
     {
         foreach (GameObject arrow in arrows)
         {
-            if (isActive)
-            {
-                Vector3 direction = arrow.transform.localPosition.normalized;
-                arrow.transform.position = transform.position + direction * arrowDistance;
-            }
+            //if (isActive)
+            //{
+            //    Vector3 direction = arrow.transform.localPosition.normalized;
+            //    arrow.transform.position = transform.position + direction * arrowDistance;
+            //}
             arrow.SetActive(isActive);
         }
     }
