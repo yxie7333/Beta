@@ -108,7 +108,7 @@ public class Level1Player : MonoBehaviour
         HandleResize();
 
         // analytics
-        if (playerMask.transform.localScale.x < 2 && playerMask.transform.localScale.y < 2) // only collect data without vision
+        if (transform.position.x > 137f && transform.position.x < 180f && transform.position.y > -52f && transform.position.y < -17f) // only collect data without vision
         {
             if (transform.position != lastPlayerPosition) // posiiton change
             {
@@ -227,15 +227,17 @@ public class Level1Player : MonoBehaviour
                 {
                     canGrow = false;
                     //resizeHintText.enabled = false;
-                    // analytic
+                   
+                    //Arrow Disappear
+                    SetArrowsActive(false);
+
+                    //analysis
                     string levelInf = "1";
                     string stageInf = "2";
                     resizeCount += 1;
                     AnalyticShape analyticShape = new AnalyticShape();
                     analyticShape.resizeCount = resizeCount.ToString();
                     analyticShape.resizeDirection = resizeDirection.ToString();
-                    //Arrow Disappear
-                    SetArrowsActive(false);
 
                     string analyticJson = JsonUtility.ToJson(analyticShape);
                     string DBurl = "https://yanjungu-unity-analytics-default-rtdb.firebaseio.com/"
@@ -289,7 +291,7 @@ public class Level1Player : MonoBehaviour
 
                 if (eatenGemCount == 1)
                 {
-                    playerMask.transform.localScale = new Vector3(4, 4, 1);
+                    playerMask.transform.localScale = new Vector3(15, 15, 1);
                     if (gem1Mask != null)
                     {
                         gem1Mask.transform.localScale = new Vector3(0, 0, 1);
@@ -305,7 +307,7 @@ public class Level1Player : MonoBehaviour
                 }
                 else if (eatenGemCount == 2)
                 {
-                    playerMask.transform.localScale = new Vector3(7, 7, 1);
+                    playerMask.transform.localScale = new Vector3(20, 20, 1);
                     if (gem1Mask != null)
                     {
                         gem1Mask.transform.localScale = new Vector3(0, 0, 1);
@@ -375,11 +377,11 @@ public class Level1Player : MonoBehaviour
     {
         foreach (GameObject arrow in arrows)
         {
-            if (isActive)
-            {
-                Vector3 direction = arrow.transform.localPosition.normalized;
-                arrow.transform.position = transform.position + direction * arrowDistance;
-            }
+            //if (isActive)
+            //{
+            //    Vector3 direction = arrow.transform.localPosition.normalized;
+            //    arrow.transform.position = transform.position + direction * arrowDistance;
+            //}
             arrow.SetActive(isActive);
         }
     }

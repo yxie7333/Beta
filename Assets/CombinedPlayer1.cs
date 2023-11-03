@@ -48,6 +48,7 @@ public class CombinedPlayer1 : MonoBehaviour
     public float proximityThreshold = 2f; // 当玩家与目标位置之间的距离小于此值时，会显示文本
     public Text instructionText; // 在Unity中将InstructionText拖放到这个字段中
     public Vector2 targetPosition2 = new Vector2(153f, -63f); // 设置玩家需要到达的位置
+    public float proximityThreshold2 = 2f; // 当玩家与目标位置之间的距离小于此值时，会显示文本
     public Text instruction2Text; // 在Unity中将Instruction2Text拖放到这个字段中
 
     // Recall
@@ -98,15 +99,7 @@ public class CombinedPlayer1 : MonoBehaviour
     private int resizeCount = 0;
 
 
-    [System.Serializable]
-    public class AnalyticShape
-    {
-        public string resizeCount;
-        public string resizeDirection;
-    }
-
-
-    void Awake()
+     void Awake()
     {
 
     }
@@ -327,11 +320,11 @@ public class CombinedPlayer1 : MonoBehaviour
         }
 
         float distanceToTarget2 = Vector2.Distance(transform.position, targetPosition2);
-        if (distanceToTarget2 <= proximityThreshold)
+        if (distanceToTarget2 <= proximityThreshold2)
         {
             instruction2Text.enabled = true; // 当玩家接近目标位置时，显示文本
         }
-        else if (instructionText.enabled) // 如果玩家远离目标区域，并且文本当前是可见的
+        else if (instruction2Text.enabled) // 如果玩家远离目标区域，并且文本当前是可见的
         {
             instruction2Text.enabled = false; // 隐藏文本
         }
@@ -348,15 +341,15 @@ public class CombinedPlayer1 : MonoBehaviour
         }
 
         // analytics
-        if (mask.transform.localScale.x < 2 && mask.transform.localScale.y < 2) // only collect data without vision
+        if (transform.position.x > 71f && transform.position.x < 115f && transform.position.y > -53f && transform.position.y < -22f) // only collect data without vision
         {
             if (transform.position != lastPlayerPosition) // posiiton change
             {
                 currentTime = Time.timeSinceLevelLoad;
                 if ((currentTime - analyticTime) > 0.1) // data-collection intervals 
                 {
-                    string levelInf = "1";
-                    string stageInf = "1";
+                    string levelInf = "0";
+                    string stageInf = "2";
 
                     AnalyticPath analyticPath = new AnalyticPath();
                     analyticPath.tick = currentTime.ToString();
@@ -458,16 +451,24 @@ public class CombinedPlayer1 : MonoBehaviour
         //    isLeftOfBox = transform.position.x < lightBox.transform.position.x;
         //}
 
-        if (collision.gameObject.CompareTag("Water") || collision.gameObject.CompareTag("Lava") || collision.gameObject.CompareTag("Grass"))
+        if (collision.gameObject.CompareTag("Grass"))
         {
-            if (CheckPointScript.ischecked == true)
-            {
-                transform.position = new Vector3(114.68f, -67.48499f);
-            }
-            else 
-            { 
-                transform.position = new Vector2(-3.84f, 0f);
-            }
+            transform.position = new Vector2(-3.84f, 0f);
+        }
+
+        if (collision.gameObject.CompareTag("Water"))
+        {
+            transform.position = new Vector3(16.0f, 0f);
+        }
+
+        if (collision.gameObject.CompareTag("Lava"))
+        {
+            transform.position = new Vector3(38.0f, 0f);
+        }
+
+        if (collision.gameObject.CompareTag("River"))
+        {
+            transform.position = new Vector3(114.68f, -64.0f);
         }
 
         if (collision.gameObject.CompareTag("LeftWall"))
@@ -582,21 +583,8 @@ public class CombinedPlayer1 : MonoBehaviour
                 {
                     canGrow = false;
                     resizeHintText.enabled = false;
-                    // analytic
-                    string levelInf = "1";
-                    string stageInf = "2";
-                    resizeCount += 1;
-                    AnalyticShape analyticShape = new AnalyticShape();
-                    analyticShape.resizeCount = resizeCount.ToString();
-                    analyticShape.resizeDirection = resizeDirection.ToString();
                     //Arrow Disappear
                     SetArrowsActive(false);
-
-                    string analyticJson = JsonUtility.ToJson(analyticShape);
-                    string DBurl = "https://yanjungu-unity-analytics-default-rtdb.firebaseio.com/"
-                                + "levels/" + levelInf + "/stages/" + stageInf + "/players/" + playerID + ".json";
-
-                    RestClient.Post(DBurl, analyticJson);
                 }
             }
         }
@@ -698,11 +686,11 @@ public class CombinedPlayer1 : MonoBehaviour
     {
         foreach (GameObject arrow in arrows)
         {
-           // if (isActive)
-           //{
-           //    Vector3 direction = arrow.transform.localPosition.normalized;
-           //    arrow.transform.position = transform.position + direction * arrowDistance;
-           //}
+            if (isActive)
+           {
+               Vector3 direction = arrow.transform.localPosition.normalized;
+               arrow.transform.position = transform.position + direction * arrowDistance;
+           }
             arrow.SetActive(isActive);
         }
     }

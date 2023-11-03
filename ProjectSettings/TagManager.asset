@@ -17,6 +17,7 @@ TagManager:
   - Recall
   - IceLake
   - Sand
+  - River
   layers:
   - Default
   - TransparentFX
