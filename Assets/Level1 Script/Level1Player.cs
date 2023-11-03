@@ -108,7 +108,7 @@ public class Level1Player : MonoBehaviour
         HandleResize();
 
         // analytics
-        if (playerMask.transform.localScale.x < 2 && playerMask.transform.localScale.y < 2) // only collect data without vision
+        if (transform.position.x > 137f && transform.position.x < 180f && transform.position.y > -52f && transform.position.y < -17f) // only collect data without vision
         {
             if (transform.position != lastPlayerPosition) // posiiton change
             {

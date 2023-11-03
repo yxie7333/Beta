@@ -349,15 +349,15 @@ public class CombinedPlayer1 : MonoBehaviour
         }
 
         // analytics
-        if (mask.transform.localScale.x < 2 && mask.transform.localScale.y < 2) // only collect data without vision
+        if (transform.position.x > 71f && transform.position.x < 115f && transform.position.y > -53f && transform.position.y < -22f) // only collect data without vision
         {
             if (transform.position != lastPlayerPosition) // posiiton change
             {
                 currentTime = Time.timeSinceLevelLoad;
                 if ((currentTime - analyticTime) > 0.1) // data-collection intervals 
                 {
-                    string levelInf = "1";
-                    string stageInf = "1";
+                    string levelInf = "0";
+                    string stageInf = "2";
 
                     AnalyticPath analyticPath = new AnalyticPath();
                     analyticPath.tick = currentTime.ToString();
