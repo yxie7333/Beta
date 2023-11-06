@@ -73,8 +73,7 @@ public class Boat : MonoBehaviour
         }
 
         // 当player通过这关时，发送收集到的数据
-        /*
-        if(myPlayer.transform.position.x >= 140.0f && !sendToDB)
+                if(myPlayer.transform.position.x >= 140.0f && !sendToDB)
         {
             sendToDB = true;
             BoatAnalyticData boatAnalyticData = new BoatAnalyticData();
@@ -92,7 +91,6 @@ public class Boat : MonoBehaviour
                            "/players/" + playerID + ".json";
             RestClient.Post(DBurl, dataJson);
         }
-        */
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
