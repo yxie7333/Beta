@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
+using Proyecto26;
+
 
 public class LightBox : MonoBehaviour
 {
@@ -12,6 +15,18 @@ public class LightBox : MonoBehaviour
     private Rigidbody2D playerRb;
     private bool isCollidingWithPlayer = false;
 
+    private float collisionStartTime;  // Store the time when collision starts
+    private float totalCollisionDuration = 0;  // Accumulate total collision duration
+
+    private string playerID = System.Guid.NewGuid().ToString();
+
+    [System.Serializable]
+    public class CollisionData
+    {
+        public string collisionDuration;
+    }
+
+
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -19,7 +34,7 @@ public class LightBox : MonoBehaviour
         playerRb = player.GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         Vector3 currentPosition = transform.position;
         currentPosition.x = Mathf.Clamp(currentPosition.x, minX, maxX);
@@ -61,13 +76,9 @@ public class LightBox : MonoBehaviour
         if (other.gameObject == player)
         {
             isCollidingWithPlayer = true;
+            collisionStartTime = Time.time;
         }
 
-        //if (other.gameObject.CompareTag("Lava"))
-        //{
-        //    Destroy(other.gameObject, 1f); // Destroy the lava
-        //    Destroy(this.gameObject, 1.1f);
-        //}
     }
 
     private void OnCollisionExit2D(Collision2D other)
@@ -76,6 +87,19 @@ public class LightBox : MonoBehaviour
         {
             isCollidingWithPlayer = false;
             rb.velocity = new Vector2(0, rb.velocity.y);
+
+            totalCollisionDuration += Time.time - collisionStartTime;
+            Debug.Log("Total collision duration: " + totalCollisionDuration + " seconds");
+
+            CollisionData collisionData = new CollisionData();
+            collisionData.collisionDuration = totalCollisionDuration.ToString();
+
+            string dataJson = JsonUtility.ToJson(collisionData);
+            string DBurl = "https://yanjungu-unity-analytics-default-rtdb.firebaseio.com/" +
+                           "levels/" + "0" +
+                           "/stages/" + "1" +
+                           "/players/" + playerID + ".json";
+            RestClient.Post(DBurl, dataJson);
         }
     }
 

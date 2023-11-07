@@ -57,7 +57,9 @@ public class LightController2 : MonoBehaviour
         {
             Destroy(water);
         }
-
-        iceCube.SetActive(true);
+        if (iceCube != null)
+        {
+            iceCube.SetActive(true);
+        }
     }
 }

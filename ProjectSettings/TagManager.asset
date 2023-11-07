@@ -17,6 +17,7 @@ TagManager:
   - Recall
   - IceLake
   - Sand
+  - River
   layers:
   - Default
   - TransparentFX
@@ -29,7 +30,7 @@ TagManager:
   - Player
   - Light
   - Grass
-  - 
+  - Ground
   - 
   - 
   - 
