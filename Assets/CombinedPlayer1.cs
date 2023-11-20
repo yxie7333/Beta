@@ -30,7 +30,7 @@ public class CombinedPlayer1 : MonoBehaviour
     //Movement
     private bool canMove = true; 
 
-
+    //Resize
     private SpriteRenderer sr;
     private bool canResize = false;
     private bool canGrowUp = true;
@@ -39,9 +39,9 @@ public class CombinedPlayer1 : MonoBehaviour
     private bool canGrowRight = true;
     private bool canGrow = false; // Start with player not being able to grow
     private float playerMass = 1f;
-
     public Text resizeHintText;
     public Text weightHintText;
+    public Image mouseImage;
 
     //Magnet
 
@@ -110,6 +110,7 @@ public class CombinedPlayer1 : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         resizeHintText.enabled = false; // 初始时设置提示为不可见
+        mouseImage.enabled = false; // 
         rb.mass = playerMass;
         if (weightHintText != null)
         {
@@ -594,6 +595,8 @@ public class CombinedPlayer1 : MonoBehaviour
                 {
                     canGrow = false;
                     resizeHintText.enabled = false;
+                    mouseImage.enabled = false; 
+
                     //Arrow Disappear
                     SetArrowsActive(false);
                     canMove = true;
@@ -642,6 +645,8 @@ public class CombinedPlayer1 : MonoBehaviour
             canResize = true;
             canGrow = true;
             resizeHintText.enabled = true;
+            mouseImage.enabled = true; 
+
             canMove = false;
             SetArrowsActive(true);
             if (weightHintText != null)
@@ -700,7 +705,6 @@ public class CombinedPlayer1 : MonoBehaviour
             }
         }
     }
-
 
     private void SetArrowsActive(bool isActive)
     {
