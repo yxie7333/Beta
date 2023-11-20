@@ -27,7 +27,8 @@ public class CombinedPlayer1 : MonoBehaviour
     public float groundedRayLength = 0.1f;
 
 
-    //private Transform playerTransform;
+    //Movement
+    private bool canMove = true; 
 
 
     private SpriteRenderer sr;
@@ -518,12 +519,15 @@ public class CombinedPlayer1 : MonoBehaviour
 
     private void HandleMovement()
     {
-        float xDir = Input.GetAxis("Horizontal");
-        rb.velocity = new Vector2(xDir * speed, rb.velocity.y);
-
-        if (Input.GetButtonDown("Jump"))
+        if (canMove)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            float xDir = Input.GetAxis("Horizontal");
+            rb.velocity = new Vector2(xDir * speed, rb.velocity.y);
+
+            if (Input.GetButtonDown("Jump"))
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            }
         }
     }
 
@@ -592,6 +596,13 @@ public class CombinedPlayer1 : MonoBehaviour
                     resizeHintText.enabled = false;
                     //Arrow Disappear
                     SetArrowsActive(false);
+                    canMove = true;
+                    
+                    //Increase quality
+                    playerMass *= 2;  // 玩家的质量翻倍
+                    rb.mass = playerMass;
+                    Debug.Log("Gem Quality: " + rb.mass);
+
                 }
             }
         }
@@ -627,9 +638,11 @@ public class CombinedPlayer1 : MonoBehaviour
         if (collision.gameObject.tag == "Gem")
         {
             Debug.Log("Gem detected");
+            Debug.Log("Gem Quality: " + rb.mass);
             canResize = true;
             canGrow = true;
             resizeHintText.enabled = true;
+            canMove = false;
             SetArrowsActive(true);
             if (weightHintText != null)
             {
@@ -655,8 +668,8 @@ public class CombinedPlayer1 : MonoBehaviour
                 }
 
             }
-            playerMass *= 2;  // 玩家的质量翻倍
-            rb.mass = playerMass;
+            // playerMass *= 2;  // 玩家的质量翻倍
+            // rb.mass = playerMass;
 
             Destroy(collision.gameObject);
 
@@ -691,13 +704,31 @@ public class CombinedPlayer1 : MonoBehaviour
 
     private void SetArrowsActive(bool isActive)
     {
+        // 玩家的当前y位置代表地板的高度
+        float groundLevel = transform.position.y;
+
         foreach (GameObject arrow in arrows)
         {
             if (isActive)
-           {
-               Vector3 direction = arrow.transform.localPosition.normalized;
-               arrow.transform.position = transform.position + direction * arrowDistance;
-           }
+            {
+                Vector3 direction = arrow.transform.localPosition.normalized;
+                Vector3 newPosition = transform.position; // Start with the current player position
+
+                // 计算箭头的新位置
+                if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y)) // 如果箭头主要指向水平方向
+                {
+                    newPosition += new Vector3(direction.x * (transform.localScale.x / 2 + 0.5f), 0f, 0f);
+                }
+                else // 如果箭头主要指向垂直方向
+                {
+                    newPosition += new Vector3(0f, direction.y * (transform.localScale.y / 2 + 0.5f), 0f);
+
+                    // 确保箭头的y值不小于地板的高度（玩家的y值）
+                    newPosition.y = Mathf.Max(newPosition.y, groundLevel);
+                }
+
+                arrow.transform.position = newPosition; // 应用新位置
+            }
             arrow.SetActive(isActive);
         }
     }
