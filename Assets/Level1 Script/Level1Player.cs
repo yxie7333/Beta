@@ -10,12 +10,13 @@ public class Level1Player : MonoBehaviour
 {
     public float speed = 5f;
     public float jumpForce = 7f;
-    private bool isJumping = false;
+    private bool isJumping = true;
     private Rigidbody2D rb;
+
     //private bool isCollidingWithBox = false;
     //private GameObject lightBox;
     //private bool isLeftOfBox = false;
-    
+
     //Resize
     private SpriteRenderer sr;
     private bool canResize = false;
@@ -152,6 +153,10 @@ public class Level1Player : MonoBehaviour
             SoundScreenEffect.Instance.FlashRight();
 
         }
+        if (collision.gameObject.CompareTag("ground"))
+        {
+            isJumping = false;
+        }
 
     }
 
@@ -162,9 +167,11 @@ public class Level1Player : MonoBehaviour
             float xDir = Input.GetAxis("Horizontal");
             rb.velocity = new Vector2(xDir * speed, rb.velocity.y);
 
-            if (Input.GetButtonDown("Jump"))
+            // handle jumping
+            if (Input.GetButtonDown("Jump") && !isJumping)
             {
-                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+                rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+                isJumping = true;
             }
         }
     }
