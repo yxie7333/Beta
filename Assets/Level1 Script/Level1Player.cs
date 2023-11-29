@@ -170,6 +170,14 @@ public class Level1Player : MonoBehaviour
             // handle jumping
             if (Input.GetButtonDown("Jump") && !isJumping)
             {
+                if (playerMass == 1)
+                {
+                    jumpForce = 7f * playerMass;
+                }
+                else
+                {
+                    jumpForce = 7f * playerMass * 1.25f;
+                }
                 rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
                 isJumping = true;
             }

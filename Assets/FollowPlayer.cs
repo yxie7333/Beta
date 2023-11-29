@@ -101,7 +101,7 @@ public class FollowPlayer : MonoBehaviour
         }
         else if (levelNum == 1)
         {
-            if (player.position.x > 137f && player.position.x < 180f && player.position.y > -52f && player.position.y < -17f)
+            if (player.position.x > 137f && player.position.x < 180f && player.position.y > -52f && player.position.y < -21.5f)
             {
                 transform.position = new Vector3(160, -37, offset.z);
                 if (cam != null && cam.orthographic)
@@ -117,10 +117,24 @@ public class FollowPlayer : MonoBehaviour
             }
             else
             {
+                int cameraSize = 0;
+                if(player.position.y < -52f)
+                {
+                    offset.x = 0;
+                    offset.y = 0;
+                    cameraSize = 8;
+                }
+                else
+                {
+                    offset.x = 0;
+                    offset.y = 5;
+                    cameraSize = 12;
+                }
+
                 transform.position = new Vector3(player.position.x + offset.x, player.position.y + offset.y, offset.z);
                 if (cam != null && cam.orthographic)
                 {
-                    cam.orthographicSize = 5;
+                    cam.orthographicSize = cameraSize;
                 }
             }
         }
