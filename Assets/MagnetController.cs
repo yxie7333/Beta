@@ -6,6 +6,10 @@ using Proyecto26;
 
 public class MagnetController : MonoBehaviour
 {
+    // 引用两个不同状态的Sprite
+    public Sprite inactiveSprite;
+    public Sprite activeSprite;
+
     private bool isEffectorActivated = false;
     private PointEffector2D pointEffector;
     private SpriteRenderer spriteRenderer;  // 新增：磁铁的SpriteRenderer组件
@@ -37,24 +41,25 @@ public class MagnetController : MonoBehaviour
 
         // 初始时设置Point Effector 2D的Force Magnitude为0
         pointEffector.forceMagnitude = 0;
-        spriteRenderer.color = Color.grey;  // 初始时设置磁铁为灰色 
+        // 初始时设置为非激活的Sprite
+        spriteRenderer.sprite = inactiveSprite;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.T))
         {
             isEffectorActivated = !isEffectorActivated; // 切换Point Effector 2D的状态
 
             if (isEffectorActivated)
             {
                 pointEffector.forceMagnitude = -20; // 根据你的需要调整此值
-                spriteRenderer.color = Color.blue;  // 当磁铁被激活时，设置为蓝色或其他亮色来高亮
+                spriteRenderer.sprite = activeSprite; // 切换到激活状态的Sprite
             }
             else
             {
                 pointEffector.forceMagnitude = 0;
-                spriteRenderer.color = Color.grey;  // 当磁铁被关闭时，设置为灰色或其他原色来取消高亮
+                spriteRenderer.sprite = inactiveSprite; // 切换回非激活状态的Sprite
 
                 // 每次关闭磁铁时，累加Magnet1Count的值并发送数据至Firebase
                 Magnet1Count++;
