@@ -106,7 +106,6 @@ public class Level1Player : MonoBehaviour
 
     private void Update()
     {      
-        Debug.Log("HandleMovement and HandleResize should be active now");
         HandleMovement();
         HandleResize();
 

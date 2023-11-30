@@ -18,6 +18,8 @@ TagManager:
   - IceLake
   - Sand
   - River
+  - Elevator
+  - Light
   layers:
   - Default
   - TransparentFX

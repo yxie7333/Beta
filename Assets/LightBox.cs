@@ -89,7 +89,7 @@ public class LightBox : MonoBehaviour
             rb.velocity = new Vector2(0, rb.velocity.y);
 
             totalCollisionDuration += Time.time - collisionStartTime;
-            Debug.Log("Total collision duration: " + totalCollisionDuration + " seconds");
+            // Debug.Log("Total collision duration: " + totalCollisionDuration + " seconds");
 
             CollisionData collisionData = new CollisionData();
             collisionData.collisionDuration = totalCollisionDuration.ToString();
