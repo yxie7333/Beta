@@ -41,6 +41,18 @@ public class Level1Player : MonoBehaviour
     public SpriteMask gem2Mask;
     public SpriteMask gem3Mask;
 
+    // Recall
+    public Material WaterMaterial3;
+    public Material WaterMaterial4;
+    public GameObject waterObject2_1;
+    public GameObject waterObject2_2;
+    public GameObject waterObject2_3;
+    public Material highlightMaterial;
+    private Material originalMaterial;
+    private GameObject highlightedObject;
+    public float interactDistance = 20f;
+    public int RecallActivated = 0;
+
 
     // analytics
     private string playerID = System.Guid.NewGuid().ToString();
@@ -137,7 +149,23 @@ public class Level1Player : MonoBehaviour
                 lastPlayerPosition = transform.position;
             }
         }
-       
+
+        // Recall Operation
+        if (Input.GetKey(KeyCode.J))
+        {
+            HighlightInteractableObjects();
+        }
+        else
+        {
+            RemoveHighlight();
+            RecallActivated = 0;
+        }
+        if (highlightedObject != null)
+        {
+            RecallActivated = 1;
+
+        }
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -430,6 +458,37 @@ public class Level1Player : MonoBehaviour
         }
     }
 
+    // Recall
+    void HighlightInteractableObjects()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactDistance);
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.CompareTag("Recall"))
+            {
+                // ¸ßÁÁÎïÌå£¬¿ÉÒÔÍ¨¹ýÐÞ¸Ä²ÄÖÊÑÕÉ«µÈ·½Ê½À´ÊµÏÖ
+                highlightedObject = collider.gameObject;
+                originalMaterial = highlightedObject.GetComponent<Renderer>().material;
+                // ÊµÏÖ¸ßÁÁÐ§¹û£¬¸Ä±ä²ÄÖÊÑÕÉ«µÈ
+                //highlightedObject.GetComponent<Renderer>().material = highlightMaterial;
+                waterObject2_1.GetComponent<Renderer>().material = WaterMaterial4;
+                waterObject2_2.GetComponent<Renderer>().material = WaterMaterial4;
+                waterObject2_3.GetComponent<Renderer>().material = WaterMaterial4;
+            }
+        }
+    }
+    void RemoveHighlight()
+    {
+        if (highlightedObject != null)
+        {
+            // ÒÆ³ý¸ßÁÁÐ§¹û£¬»¹Ô­²ÄÖÊÑÕÉ«µÈ
+            highlightedObject.GetComponent<Renderer>().material = originalMaterial;
+            highlightedObject = null;
+            waterObject2_1.GetComponent<Renderer>().material = WaterMaterial3;
+            waterObject2_2.GetComponent<Renderer>().material = WaterMaterial3;
+            waterObject2_3.GetComponent<Renderer>().material = WaterMaterial3;
+        }
+    }
 
     // private void SetArrowsActive(bool isActive)
     // {
