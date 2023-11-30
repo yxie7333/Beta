@@ -9,6 +9,7 @@ public class LightControllerLevel1Second : MonoBehaviour
     public GameObject light;          // Assign first fire object
     public GameObject hiddenLight;     // Assign the hidden fire object
     public GameObject hiddenPath;
+    public GameObject lightbox;
 
     public void Start()
     {
@@ -18,6 +19,11 @@ public class LightControllerLevel1Second : MonoBehaviour
     private void Update()
     {
         CheckFireMirrorCollision(light);
+
+        if (lightbox.transform.position.x >= 143.5f)
+        {
+            hiddenLight.gameObject.SetActive(false);
+        }
     }
 
     private void CheckFireMirrorCollision(GameObject light)
