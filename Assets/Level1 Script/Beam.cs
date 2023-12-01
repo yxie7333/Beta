@@ -9,6 +9,7 @@ public class Beam : MonoBehaviour
     public Vector3 beamNewPosition;
     public float beamSpeed;
     private bool beamActivated = false;
+    private bool firstFall = true;
 
     // Start is called before the first frame update
     private void Awake()
@@ -23,8 +24,13 @@ public class Beam : MonoBehaviour
 
             transform.position = Vector3.MoveTowards(transform.position, beamNewPosition,
                             beamSpeed * Time.deltaTime);
-            beamActivated = true;
+            
             //Debug.Log("beam activated");
+        }
+
+        if(transform.position == beamNewPosition)
+        {
+            beamActivated = true;
         }
 
         if (beamActivated == true)
@@ -34,15 +40,17 @@ public class Beam : MonoBehaviour
                 transform.position = Vector3.MoveTowards(transform.position, beamOriginalPosition,
                             beamSpeed * Time.deltaTime);
                 //Debug.Log("Beam is recalling!");
-                Debug.Log("Beam original position: " + beamOriginalPosition);
+                //Debug.Log("Beam original position: " + beamOriginalPosition);
             }
+            /*
             else
             {
                 transform.position = Vector3.MoveTowards(transform.position, beamNewPosition,
                             beamSpeed * Time.deltaTime);
+                firstFall = false;
                 //Debug.Log("Beam is falling!");
-            }
+            } 
+            */
         }
-
     }
 }
