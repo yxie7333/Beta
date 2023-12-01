@@ -106,6 +106,13 @@ public class Level1Player : MonoBehaviour
         Debug.Log("HandleMovement and HandleResize should be active now");
         HandleMovement();
         HandleResize();
+        HandleMask();
+
+        if(transform.position.y <= -14.49 && transform.position.y >= -14.48)
+        {
+            isJumping = false;
+        }
+
 
         // analytics
         if (transform.position.x > 137f && transform.position.x < 180f && transform.position.y > -52f && transform.position.y < -17f) // only collect data without vision
@@ -250,6 +257,71 @@ public class Level1Player : MonoBehaviour
         else
         {
             sr.color = Color.white;
+        }
+    }
+
+
+    private void HandleMask()
+    {
+        Vector3 scale = transform.localScale;
+
+
+        if (playerMask != null)
+        {
+
+            if (eatenGemCount == 1)
+            {
+                playerMask.transform.localScale = new Vector3(15 / scale.x, 15 / scale.y, 1);
+                if (gem1Mask != null)
+                {
+                    gem1Mask.transform.localScale = new Vector3(0, 0, 1);
+                }
+                if (gem2Mask != null)
+                {
+                    gem2Mask.transform.localScale = new Vector3(0, 0, 1);
+                }
+                if (gem3Mask != null)
+                {
+                    gem3Mask.transform.localScale = new Vector3(0, 0, 1);
+                }
+            }
+            else if (eatenGemCount == 2)
+            {
+                playerMask.transform.localScale = new Vector3(20 / scale.x, 20 / scale.y, 1);
+                if (gem1Mask != null)
+                {
+                    gem1Mask.transform.localScale = new Vector3(0, 0, 1);
+                }
+                if (gem2Mask != null)
+                {
+                    gem2Mask.transform.localScale = new Vector3(0, 0, 1);
+                }
+                if (gem3Mask != null)
+                {
+                    gem3Mask.transform.localScale = new Vector3(0, 0, 1);
+                }
+            }
+            else if (eatenGemCount == 3)
+            {
+                playerMask.transform.localScale = new Vector3(500 / scale.y, 500 / scale.y, 1);
+                if (gem1Mask != null)
+                {
+                    gem1Mask.transform.localScale = new Vector3(0, 0, 1);
+                }
+                if (gem2Mask != null)
+                {
+                    gem2Mask.transform.localScale = new Vector3(0, 0, 1);
+                }
+                if (gem3Mask != null)
+                {
+                    gem3Mask.transform.localScale = new Vector3(0, 0, 1);
+                }
+            }
+            else
+            {
+                ;
+            }
+
         }
     }
 

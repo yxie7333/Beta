@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class UIButtonScript : MonoBehaviour
 {
-    public GameObject OptionPanel, PauseButton, WinPanel;
+    public GameObject OptionPanel, PauseButton, WinPanel, HelpPanel;
 
     public void setOptionPanelOn()
     {
@@ -17,6 +17,17 @@ public class UIButtonScript : MonoBehaviour
     {
         OptionPanel.SetActive(false);
         Time.timeScale = 1.0f;
+    }
+    public void setHelpPanelOn()
+    {
+        HelpPanel.SetActive(true);
+        OptionPanel.SetActive(false);
+    }
+
+    public void setHelpPanelOff()
+    {
+        HelpPanel.SetActive(false);
+        OptionPanel.SetActive(true);
     }
 
     public void GoToLevelSelection()
