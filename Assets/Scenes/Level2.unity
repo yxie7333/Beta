@@ -55127,25 +55127,25 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'A: Move left
+  m_text: '<- or A: Move left
 
 
-    D: Move right
+    -> or D: Move right
 
 
     Space: Jump
 
 
-    J: Hold J to
-    activate your "Recall" ability, release to cancel it
+    J:
+    Hold J to activate your "Recall" ability, release to cancel it
 
 
-    T: Press T to activate
-    the magnet to attract you, press again to cancel it
+    T: Press
+    T to activate the magnet to attract you, press again to cancel it
 
 
-    R: Press R to activate
-    the magnet to repel you, press again to cancel it
+    R: Press
+    R to activate the magnet to repel you, press again to cancel it
 
 '
   m_isRightToLeft: 0
