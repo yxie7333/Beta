@@ -14036,6 +14036,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inactiveSprite: {fileID: 21300000, guid: 85a2adfb42a8d62419dd32d8cd901f37, type: 3}
   activeSprite: {fileID: 21300000, guid: f6efaac9b4606ef438a45532dfec5aa7, type: 3}
+  MageticPower: 20
 --- !u!250 &1967101540
 PointEffector2D:
   m_ObjectHideFlags: 0
@@ -14884,6 +14885,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 569831427}
+    - target: {fileID: 4173447969532695441, guid: d00d4fec6c42a4c418d099833c77aecc, type: 3}
+      propertyPath: m_RenderMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5601281077359926505, guid: d00d4fec6c42a4c418d099833c77aecc, type: 3}
       propertyPath: m_Name
       value: Canvas

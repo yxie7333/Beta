@@ -17,6 +17,8 @@ public class MagnetController : MonoBehaviour
     private string playerID = System.Guid.NewGuid().ToString();
     private int Magnet1Count = 0;
 
+    public int MageticPower;
+
     [System.Serializable]
     public class AnalyticMagnet
     {
@@ -53,7 +55,7 @@ public class MagnetController : MonoBehaviour
 
             if (isEffectorActivated)
             {
-                pointEffector.forceMagnitude = -20; // 根据你的需要调整此值
+                pointEffector.forceMagnitude = -MageticPower; // 根据你的需要调整此值
                 spriteRenderer.sprite = activeSprite; // 切换到激活状态的Sprite
             }
             else
