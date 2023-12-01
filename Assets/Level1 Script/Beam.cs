@@ -23,18 +23,22 @@ public class Beam : MonoBehaviour
     void Update()
     {
         // 记录玩家解密时间
-        if (myPlayer.transform.position.x >= 164.45f && myPlayer.transform.position.x <= 200.53f &&
+        if (myPlayer.transform.position.x >= 193.43f && myPlayer.transform.position.x <= 200.53f &&
             myPlayer.transform.position.y >= -78.49f && myPlayer.transform.position.y <= -71.52f)
         {
             timeInsideBeamArea += Time.deltaTime;
         }
 
         // 如果玩家解密时间超过1min
-        if (timeInsideBeamArea >= 30 && myPlayer.transform.position.y >= -78.49f)
+        if (timeInsideBeamArea >= 3 && myPlayer.transform.position.y >= -78.49f)
         {
-            // 显示hint
-            beamHint.SetActive(true);
-            //Debug.Log("BeamHint Activated!");
+            if (myPlayer.transform.position.x >= 193.43f && myPlayer.transform.position.x <= 200.53f &&
+    myPlayer.transform.position.y >= -78.49f && myPlayer.transform.position.y <= -71.52f)
+            {
+                // 显示hint
+                beamHint.SetActive(true);
+                //Debug.Log("BeamHint Activated!");
+            }
         }
 
         // 当玩家成功解密，隐藏hint
