@@ -52,7 +52,7 @@ public class Level1Player : MonoBehaviour
     private GameObject highlightedObject;
     public float interactDistance = 20f;
     public int RecallActivated = 0;
-
+    public bool playerFirstCollideBeam = false;
 
     // analytics
     private string playerID = System.Guid.NewGuid().ToString();
@@ -185,6 +185,12 @@ public class Level1Player : MonoBehaviour
             isJumping = false;
         }
 
+        // Recall
+        if (collision.gameObject.CompareTag("Beam"))
+        {
+            isJumping = false;
+            playerFirstCollideBeam = true;
+        }
     }
 
     private void HandleMovement()
@@ -474,6 +480,12 @@ public class Level1Player : MonoBehaviour
                 waterObject2_1.GetComponent<Renderer>().material = WaterMaterial4;
                 waterObject2_2.GetComponent<Renderer>().material = WaterMaterial4;
                 waterObject2_3.GetComponent<Renderer>().material = WaterMaterial4;
+            }
+
+            if (collider.CompareTag("Beam"))
+            {
+                highlightedObject = collider.gameObject;
+                originalMaterial = highlightedObject.GetComponent<Renderer>().material;
             }
         }
     }

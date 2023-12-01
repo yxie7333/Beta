@@ -20,6 +20,7 @@ TagManager:
   - River
   - Elevator
   - Light
+  - Beam
   layers:
   - Default
   - TransparentFX
